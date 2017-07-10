@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+//드롭다운 버튼 만들기
+
+//select option "객관식" or "주관식"
+$(document).ready(function(){
+  $("#select").on('change', function(){
+    var id_val = $(this).val();
+    if( id_val == 'gaek' ){
+      $('#munHang').toggle();
+    }
+    else{
+      $('#munHang').toggle();
+    }
+  });
+});
+
+//각 버튼 별로 function 지정.
+$(document).ready(function(){
+  $("#moveBtn").click(function(){
+    alert("이동버튼");
+    //팝업형식으로 창이 뜬다음 임의의 질문 앞으로 or 뒤로 이동할 수 있음.
+  });
+});
+
+$(document).ready(function(){
+  $("#copyBtn").click(function(){
+    alert("복사버튼");
+    //해당 문항을 다음에 복사
+  });
+});
+
+$(document).ready(function(){
+  $("#deleteBtn").click(function(){
+    alert("삭제버튼");
+    //해당 문항을 삭제
+  });
+});
+
+
+
+
+
+
+
+
+//input 값 동적생성
+//drop down 버튼에 따라서 동적 생성되는 값이 달라야함
+var defalut = 3;
+$(document).ready(function(){
+      var munHangIdValue = "munHang";
+      var mNum =1;
+      var munDiv ="munDiv";
+      $(".leftDiv").append('<div id = ' +munHangIdValue+'>');
+      //div안에 인풋태그를 동적 생성하여 넣어야함
+      for(var  i= 0 ; i < defalut ; i++){
+        var sqIdValue = "sub_Ques_" +  i;
+        var pButtonIdValue = "pButton_" +  i;
+        var mButtonIdValue = "mButton_" +  i;
+
+        var inputVal = '<div id =' +munDiv+'>';
+            inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
+            inputVal +='<button id ='+pButtonIdValue+'>+</button>'
+            inputVal +='<button id ='+mButtonIdValue+'>-</button>'
+            inputVal +='</div>'
+
+        $(".leftDiv #munHang").append(inputVal);
+        mNum = i+1;
+      }
+      $('.leftDiv').append('</div>');
+    //});
+});
+
+
+
+//+버튼 -버튼 클릭
+$(document).on("click", "button",function(){
+  var butttonid ='';
+    buttonid = $(this).attr('id');
+    //len = ($('.leftDiv #munHang input').length);
+    var bIndex =CountDiv(this);
+    var sqIdValue = "sub_Ques_" +  bIndex;
+    var pButtonIdValue = "pButton_" +  bIndex;
+    var mButtonIdValue = "mButton_" +  bIndex;
+    var munDiv ="munDiv";
+    //삽입될떄 버튼의 아이디 값도 한칸씩 밀려야한다.
+    var str = buttonid.split("_");
+    //+버튼일때!
+    if(str[0] == "pButton"){
+      //alert("+버튼");
+      //alert("bIndex 값 = " +bIndex);
+      var inputVal = '<div id =' +munDiv+'>';
+          inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
+          inputVal +='<button id ='+pButtonIdValue+'>+</button>'
+          inputVal +='<button id ='+mButtonIdValue+'>-</button>'
+          inputVal +='</div>';
+
+      //div 동적생성
+      $(this).parent().after(inputVal);
+
+      var divCount = $('.leftDiv #munHang div').length;
+      //추가후 아이디값 변경
+      for(var i = bIndex+1; i< divCount; i++){
+        //alert("i 값 =" + i);
+        sqIdValue = "sub_Ques_" +  i;
+        pButtonIdValue = "pButton_" +  i;
+        mButtonIdValue = "mButton_" +  i;
+        //  //(this).parent().parent().children() munDiv 전체
+        //  //eq(i).children().eq(0) munDiv 전체중에서의 자손객체 중 0번째
+        $(this).parent().parent().children().eq(i).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
+        $(this).parent().parent().children().eq(i).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
+        $(this).parent().parent().children().eq(i).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
+      }
+
+
+    }else if(str[0] == 'mButton'){
+      //alert("-버튼");
+      var divCount = $('.leftDiv #munHang div').length;
+			if(divCount == 1){
+				alert("더 이상 삭제하실수 없습니다")
+			}
+			else{
+      	//밑에 있는 인덱스를 1씩 감소시켜
+	      for(var i = divCount-2; i >= bIndex; i--){
+	        //alert("i 값 =" + i);
+	        sqIdValue = "sub_Ques_" +  i;
+	        pButtonIdValue = "pButton_" +  i;
+	        mButtonIdValue = "mButton_" +  i;
+	    		$(this).parent().parent().children().eq(i+1).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
+	        $(this).parent().parent().children().eq(i+1).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
+	        $(this).parent().parent().children().eq(i+1).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
+	      }
+	      $(this).parent().parent().children().eq(bIndex).remove();
+		}
+  }
+
+  });
+
+//tag 개수를 세는 function
+//index개수에 따라 다시 동적 생성하도록
+function CountDiv(bValue){
+       var indexNum = $(bValue).parent().index();
+       //alert("선택한 엘리먼트의 인덱스 " +indexNum);
+       return indexNum;
+
+}
+
+
+</script>
+</head>
+<body>
+<!--왼쪽 div 구성요소, drop down으로 객관식, 주관식 선택가능-->
+  <div class = "leftDiv">
+    <div class = "select">
+      <select id = "select">
+        <option value="gaek">객관식</option>
+        <option value="joo">주관식</option>
+      </select>
+    </div>
+oiv" style = "display: none;">
+      <input type = 'text' id = 'jooInput'></input>
+      주관식
+    </div>
+  </div>
+
+<div class ="QuesDiv">
+  <div id = "ques" style="width: 250px;">
+    <input type ='text' id = "Ques"></input>
+  </div>
+
+  <div id="button_div" style="width: 250px;">
+    <button id="moveBtn">이동</button>
+    <button id="copyBtn">복사</button>
+    <button id="deleteBtn">삭제</button>
+  </div>
+
+  <div id ="sq">
+    <input type ='text' id = "sub_Ques1"></input>
+    <input type ='text' id = "sub_Ques2"></input>
+    <input type ='text' id = "sub_Ques3"></input>
+  </div>
+</div>
+
+<button id="btn1">Append text</button>
+<button id="btn2">+</button>
+
+</body>
+</html>
