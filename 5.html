@@ -42,7 +42,28 @@ $(document).ready(function(){
 });
 
 
+//오른쪽에 옮기는 거
 
+$(document).ready(function(){
+  $("#btn1").click(function(){
+    var divCount = $('.leftDiv #munHang div').length;
+    array= []
+    for(var i = 1; i < divCount; i++){
+      array[i] = ($(".leftDiv #munHang #munDiv #sub_Ques_"+i).val());
+      alert(array[i]);
+    }
+  });
+
+    var row = "<tr>";
+        row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
+        row+="<td><span>없애는거</span></td>";
+        row+="</tr>";
+        $("#table").append(row);
+
+  $("#table").on("click","span",function(){
+    $(this).closest("tr").remove();
+  });
+});
 
 
 
@@ -161,7 +182,7 @@ function CountDiv(bValue){
         <option value="joo">주관식</option>
       </select>
     </div>
-oiv" style = "display: none;">
+<div style = "display: none;">
       <input type = 'text' id = 'jooInput'></input>
       주관식
     </div>
@@ -179,11 +200,18 @@ oiv" style = "display: none;">
   </div>
 
   <div id ="sq">
-    <input type ='text' id = "sub_Ques1"></input>
-    <input type ='text' id = "sub_Ques2"></input>
-    <input type ='text' id = "sub_Ques3"></input>
+    <input type ='text' id = "Ques1"></input>
+    <input type ='text' id = "Ques2"></input>
+    <input type ='text' id = "Ques3"></input>
   </div>
 </div>
+
+<table id="table">
+  <tr>
+    <td><input type = "text"/></td>
+  </tr>
+  <tbody></tbody>
+</table>
 
 <button id="btn1">Append text</button>
 <button id="btn2">+</button>
