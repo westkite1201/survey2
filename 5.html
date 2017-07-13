@@ -42,6 +42,8 @@ $(document).ready(function(){
 });
 
 
+<<<<<<< HEAD
+//오른쪽에 옮기는 거
 
 $(document).ready(function(){
   $("#btn1").click(function(){
@@ -52,8 +54,46 @@ $(document).ready(function(){
       alert(array[i]);
     }
   });
+<<<<<<< HEAD
 });
+=======
+>>>>>>> c82d7b57e83b04200f38ef68d09fef373694c239
 
+=======
+//오른쪽에 넘기는 동작
+$(document).ready(function(){
+  $("#btn1").click(function(){
+    var msg0 = " ";
+    msg0 += $("#Ques").val();
+    var msg1 = " ";
+    msg1 += $('#Ques1').val();
+    var msg2 = " ";
+    msg2 += $("#Ques2").val();
+    var msg3 = " ";
+    msg3 += $("#Ques3").val();
+    $(".QuesDiv").find('#ques>*,#sq>*').each(function(index,item){
+      alert(msg+""+index);
+
+        });
+>>>>>>> master
+    var row = "<tr>";
+        row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
+        row+="<td><span>없애는거</span></td>";
+        row+="</tr>";
+        $("#table").append(row);
+<<<<<<< HEAD
+
+=======
+});
+>>>>>>> master
+  $("#table").on("click","span",function(){
+    $(this).closest("tr").remove();
+  });
+});
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 
 
 //일단 하나씪 밀었씁니다
@@ -196,11 +236,18 @@ function CountDiv(bValue){
   </div>
 
   <div id ="sq">
-    <input type ='text' id = "sub_Ques1"></input>
-    <input type ='text' id = "sub_Ques2"></input>
-    <input type ='text' id = "sub_Ques3"></input>
+    <input type ='text' id = "Ques1"></input>
+    <input type ='text' id = "Ques2"></input>
+    <input type ='text' id = "Ques3"></input>
   </div>
 </div>
+
+<table id="table">
+  <tr>
+    <td><input type = "text"/></td>
+  </tr>
+  <tbody></tbody>
+</table>
 
 <button id="btn1">Append text</button>
 <button id="btn2">+</button>
