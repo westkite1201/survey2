@@ -42,6 +42,7 @@ $(document).ready(function(){
 });
 
 
+<<<<<<< HEAD
 //오른쪽에 넘기는 동작
 $(document).ready(function(){
   $("#btn1").click(function(){
@@ -65,6 +66,12 @@ $(document).ready(function(){
 });
   $("#table").on("click","span",function(){
     $(this).closest("tr").remove();
+=======
+
+$(document).ready(function(){
+  $("#btn1").click(function(){
+  alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
+>>>>>>> seo
   });
 });
 
@@ -78,13 +85,14 @@ $(document).ready(function(){
       var munHangIdValue = "munHang";
       var mNum =1;
       var munDiv ="munDiv";
-      $(".leftDiv").append('<div id = ' +munHangIdValue+'>');
+      $(".leftDiv").append('<div id = ' +munHangIdValue+'>'+ '<div id ="jilmun"><input type ="text" id ="mainJilmun"></div>');
       //div안에 인풋태그를 동적 생성하여 넣어야함
-      for(var  i= 0 ; i < defalut ; i++){
+
+
+      for(var  i= 1 ; i < defalut ; i++){
         var sqIdValue = "sub_Ques_" +  i;
         var pButtonIdValue = "pButton_" +  i;
         var mButtonIdValue = "mButton_" +  i;
-
         var inputVal = '<div id =' +munDiv+'>';
             inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
             inputVal +='<button id ='+pButtonIdValue+'>+</button>'
@@ -97,7 +105,8 @@ $(document).ready(function(){
       $('.leftDiv').append('</div>');
     //});
 });
-
+//ㅁㄴㅇㅁ
+//2321
 
 
 //+버튼 -버튼 클릭
@@ -143,7 +152,7 @@ $(document).on("click", "button",function(){
     }else if(str[0] == 'mButton'){
       //alert("-버튼");
       var divCount = $('.leftDiv #munHang div').length;
-			if(divCount == 1){
+			if(divCount == 2){
 				alert("더 이상 삭제하실수 없습니다")
 			}
 			else{
@@ -170,9 +179,23 @@ function CountDiv(bValue){
        //alert("선택한 엘리먼트의 인덱스 " +indexNum);
        return indexNum;
 }
+<<<<<<< HEAD
 //주석테스트 입니다.
+<<<<<<< HEAD
 //주석테스트2 입니다.
 
+=======
+=======
+
+
+//다음 질문 클릭시 왼쪽 값 우측으로 옮김
+
+//왼쪽값
+
+
+
+>>>>>>> seo
+>>>>>>> d23328c630f49f30ae157d0cb3520b5dd18cdf9a
 </script>
 </head>
 <body>
@@ -184,7 +207,11 @@ function CountDiv(bValue){
         <option value="joo">주관식</option>
       </select>
     </div>
+<<<<<<< HEAD
     <div style = "display: none;">
+=======
+<div style = "display: none;">
+>>>>>>> seo
       <input type = 'text' id = 'jooInput'></input>
       주관식
     </div>
