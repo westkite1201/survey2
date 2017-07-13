@@ -3,18 +3,19 @@
   overflow-y: scroll;
   float :left;
   width: 50%;
-  height: 100px;
+  height: 300px;
 }
 .rightDiv{
   background:  grey;
   width: 500px;
-  height: 100px;
+  height: 300px;
 }
 .QuesDiv{
   background: grey;
+  overflow-y: scroll;
   display: inline-block;
   width: 500px;
-  height: 100px;
+  height: 300px;
 }
 .jooDiv{
   background: grey;

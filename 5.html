@@ -42,29 +42,32 @@ $(document).ready(function(){
 });
 
 
-
-
+var jilmunCount = 1;
 //오른쪽에 넘기는 동작
 $(document).ready(function(){
   $("#btn1").click(function(){
     var divCount = $('.leftDiv #munHang div').length;
-    array= []
+    array= [];
+    var jil = ($(".leftDiv #munHang #jilmun #mainJilmun").val());
+    alert(jil);
     for(var i = 1; i < divCount; i++){
         array[i] = ($(".leftDiv #munHang #munDiv #sub_Ques_"+i).val());
-        alert(array[i]);
       }
+      var jilmunNum = "jilmunNum"+ jilmunCount;
+      var leftMake = '<div id ='+jilmunNum+'>';
+
+          leftMake +='<h2>'+jilmunCount+". "+ jil;
+          leftMake +='</h2>'
+
+      for(var i = 1 ; i < array.length; i++){
+        leftMake +='<p>'+array[i]+'</p>';
+      }
+        leftMake +='</div>';
+      $(".QuesDiv").append(leftMake);
+      jilmunCount +=1;
   });
 });
-//     var row = "<tr>";
-//         row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
-//         row+="<td><span>없애는거</span></rrtd>";
-//         row+="</tr>";
-//         $("#table").append(row);
-//
-//   $("#table").on("click","span",function(){
-//     $(this).closest("tr").remove();
-//   });
-// });
+
 
 
 
@@ -204,11 +207,7 @@ function CountDiv(bValue){
     <button id="deleteBtn">삭제</button>
   </div>
 
-  <div id ="sq">
-    <input type ='text' id = "Ques1"></input>
-    <input type ='text' id = "Ques2"></input>
-    <input type ='text' id = "Ques3"></input>
-  </div>
+
 </div>
 
 <table id="table">
