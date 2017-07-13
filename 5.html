@@ -12,9 +12,11 @@ $(document).ready(function(){
     var id_val = $(this).val();
     if( id_val == 'gaek' ){
       $('#munHang').toggle();
+      $('#jooDiv').toggle();
     }
     else{
       $('#munHang').toggle();
+      $('#jooDiv').toggle();
     }
   });
 });
@@ -41,6 +43,7 @@ $(document).ready(function(){
   });
 });
 
+
 //이거바꾼다.
 var jilmunCount = 1;
 //오른쪽에 넘기는 동작
@@ -64,6 +67,30 @@ $(document).ready(function(){
         leftMake +='</div>';
       $(".QuesDiv").append(leftMake);
       jilmunCount +=1;
+=======
+//오른쪽에 넘기는 동작
+$(document).ready(function(){
+  $("#btn1").click(function(){
+    var msg0 = " ";
+    msg0 += $("#Ques").val();
+    var msg1 = " ";
+    msg1 += $('#Ques1').val();
+    var msg2 = " ";
+    msg2 += $("#Ques2").val();
+    var msg3 = " ";
+    msg3 += $("#Ques3").val();
+    $(".QuesDiv").find('#ques>*,#sq>*').each(function(index,item){
+      alert(msg+""+index);
+
+        });
+    var row = "<tr>";
+        row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
+        row+="<td><span>없애는거</span></td>";
+        row+="</tr>";
+        $("#table").append(row);
+});
+  $("#table").on("click","span",function(){
+
   });
 });
 //이거 바꿈
@@ -81,7 +108,6 @@ $(document).ready(function(){
       $(".leftDiv").append('<div id = ' +munHangIdValue+'>'+ '<div id ="jilmun"><input type ="text" id ="mainJilmun"></div>');
       //div안에 인풋태그를 동적 생성하여 넣어야함
 
-
       for(var  i= 1 ; i < defalut ; i++){
         var sqIdValue = "sub_Ques_" +  i;
         var pButtonIdValue = "pButton_" +  i;
@@ -98,15 +124,12 @@ $(document).ready(function(){
       $('.leftDiv').append('</div>');
     //});
 });
-//ㅁㄴㅇㅁ
-//2321
-
 
 //+버튼 -버튼 클릭
 $(document).on("click", "button",function(){
   var butttonid ='';
     buttonid = $(this).attr('id');
-    //len = ($('.leftDiv #munHang input').length);
+
     var bIndex =CountDiv(this);
     var sqIdValue = "sub_Ques_" +  bIndex;
     var pButtonIdValue = "pButton_" +  bIndex;
@@ -116,8 +139,6 @@ $(document).on("click", "button",function(){
     var str = buttonid.split("_");
     //+버튼일때!
     if(str[0] == "pButton"){
-      //alert("+버튼");
-      //alert("bIndex 값 = " +bIndex);
       var inputVal = '<div id =' +munDiv+'>';
           inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
           inputVal +='<button id ='+pButtonIdValue+'>+</button>'
@@ -134,8 +155,7 @@ $(document).on("click", "button",function(){
         sqIdValue = "sub_Ques_" +  i;
         pButtonIdValue = "pButton_" +  i;
         mButtonIdValue = "mButton_" +  i;
-        //  //(this).parent().parent().children() munDiv 전체
-        //  //eq(i).children().eq(0) munDiv 전체중에서의 자손객체 중 0번째
+
         $(this).parent().parent().children().eq(i).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
         $(this).parent().parent().children().eq(i).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
         $(this).parent().parent().children().eq(i).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
@@ -143,7 +163,7 @@ $(document).on("click", "button",function(){
 
 
     }else if(str[0] == 'mButton'){
-      //alert("-버튼");
+
       var divCount = $('.leftDiv #munHang div').length;
 			if(divCount == 2){
 				alert("더 이상 삭제하실수 없습니다")
@@ -151,7 +171,6 @@ $(document).on("click", "button",function(){
 			else{
       	//밑에 있는 인덱스를 1씩 감소시켜
 	      for(var i = divCount-2; i >= bIndex; i--){
-	        //alert("i 값 =" + i);
 	        sqIdValue = "sub_Ques_" +  i;
 	        pButtonIdValue = "pButton_" +  i;
 	        mButtonIdValue = "mButton_" +  i;
@@ -169,15 +188,9 @@ function CountDiv(bValue){
        var indexNum = $(bValue).parent().index();
        //alert("선택한 엘리먼트의 인덱스 " +indexNum);
        return indexNum;
-     };
-
-
-//다음 질문 클릭시 왼쪽 값 우측으로 옮김
+}
 
 //왼쪽값
-
-
-
 </script>
 </head>
 <body>
@@ -189,7 +202,8 @@ function CountDiv(bValue){
         <option value="joo">주관식</option>
       </select>
     </div>
-<div style = "display: none;">
+
+    <div id = "jooDiv" style = "display: none;">
       <input type = 'text' id = 'jooInput'></input>
       주관식
     </div>
