@@ -42,6 +42,7 @@ $(document).ready(function(){
 });
 
 
+<<<<<<< HEAD
 //오른쪽에 넘기는 동작
 $(document).ready(function(){
   $("#btn1").click(function(){
@@ -65,6 +66,12 @@ $(document).ready(function(){
 });
   $("#table").on("click","span",function(){
     $(this).closest("tr").remove();
+=======
+
+$(document).ready(function(){
+  $("#btn1").click(function(){
+  alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
+>>>>>>> seo
   });
 });
 
@@ -78,13 +85,14 @@ $(document).ready(function(){
       var munHangIdValue = "munHang";
       var mNum =1;
       var munDiv ="munDiv";
-      $(".leftDiv").append('<div id = ' +munHangIdValue+'>');
+      $(".leftDiv").append('<div id = ' +munHangIdValue+'>'+ '<div id ="jilmun"><input type ="text" id ="mainJilmun"></div>');
       //div안에 인풋태그를 동적 생성하여 넣어야함
-      for(var  i= 0 ; i < defalut ; i++){
+
+
+      for(var  i= 1 ; i < defalut ; i++){
         var sqIdValue = "sub_Ques_" +  i;
         var pButtonIdValue = "pButton_" +  i;
         var mButtonIdValue = "mButton_" +  i;
-
         var inputVal = '<div id =' +munDiv+'>';
             inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
             inputVal +='<button id ='+pButtonIdValue+'>+</button>'
@@ -97,7 +105,8 @@ $(document).ready(function(){
       $('.leftDiv').append('</div>');
     //});
 });
-
+//ㅁㄴㅇㅁ
+//2321
 
 
 //+버튼 -버튼 클릭
@@ -143,7 +152,7 @@ $(document).on("click", "button",function(){
     }else if(str[0] == 'mButton'){
       //alert("-버튼");
       var divCount = $('.leftDiv #munHang div').length;
-			if(divCount == 1){
+			if(divCount == 2){
 				alert("더 이상 삭제하실수 없습니다")
 			}
 			else{
@@ -171,6 +180,9 @@ function CountDiv(bValue){
        return indexNum;
 }
 
+//다음 질문 클릭시 왼쪽 값 우측으로 옮김
+
+//왼쪽값
 
 </script>
 </head>
@@ -183,12 +195,12 @@ function CountDiv(bValue){
         <option value="joo">주관식</option>
       </select>
     </div>
-    <div style = "display: none">
+    <div style = "display: none;">
+<div style = "display: none;">
       <input type = 'text' id = 'jooInput'></input>
       주관식
     </div>
   </div>
-
 <div class ="QuesDiv">
   <div id = "ques" style="width: 250px;">
     <input type ='text' id = "Ques"></input>
