@@ -42,6 +42,7 @@ $(document).ready(function(){
 });
 
 
+<<<<<<< HEAD
 //오른쪽에 옮기는 거
 
 $(document).ready(function(){
@@ -54,17 +55,41 @@ $(document).ready(function(){
     }
   });
 
+=======
+//오른쪽에 넘기는 동작
+$(document).ready(function(){
+  $("#btn1").click(function(){
+    var msg0 = " ";
+    msg0 += $("#Ques").val();
+    var msg1 = " ";
+    msg1 += $('#Ques1').val();
+    var msg2 = " ";
+    msg2 += $("#Ques2").val();
+    var msg3 = " ";
+    msg3 += $("#Ques3").val();
+    $(".QuesDiv").find('#ques>*,#sq>*').each(function(index,item){
+      alert(msg+""+index);
+
+        });
+>>>>>>> master
     var row = "<tr>";
         row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
         row+="<td><span>없애는거</span></td>";
         row+="</tr>";
         $("#table").append(row);
+<<<<<<< HEAD
 
+=======
+});
+>>>>>>> master
   $("#table").on("click","span",function(){
     $(this).closest("tr").remove();
   });
 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 
 
 
