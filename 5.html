@@ -42,58 +42,30 @@ $(document).ready(function(){
 });
 
 
-<<<<<<< HEAD
-//오른쪽에 옮기는 거
 
+
+//오른쪽에 넘기는 동작
 $(document).ready(function(){
   $("#btn1").click(function(){
     var divCount = $('.leftDiv #munHang div').length;
     array= []
     for(var i = 1; i < divCount; i++){
-      array[i] = ($(".leftDiv #munHang #munDiv #sub_Ques_"+i).val());
-      alert(array[i]);
-    }
-  });
-<<<<<<< HEAD
-});
-=======
->>>>>>> c82d7b57e83b04200f38ef68d09fef373694c239
-
-=======
-//오른쪽에 넘기는 동작
-$(document).ready(function(){
-  $("#btn1").click(function(){
-    var msg0 = " ";
-    msg0 += $("#Ques").val();
-    var msg1 = " ";
-    msg1 += $('#Ques1').val();
-    var msg2 = " ";
-    msg2 += $("#Ques2").val();
-    var msg3 = " ";
-    msg3 += $("#Ques3").val();
-    $(".QuesDiv").find('#ques>*,#sq>*').each(function(index,item){
-      alert(msg+""+index);
-
-        });
->>>>>>> master
-    var row = "<tr>";
-        row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
-        row+="<td><span>없애는거</span></td>";
-        row+="</tr>";
-        $("#table").append(row);
-<<<<<<< HEAD
-
-=======
-});
->>>>>>> master
-  $("#table").on("click","span",function(){
-    $(this).closest("tr").remove();
+        array[i] = ($(".leftDiv #munHang #munDiv #sub_Ques_"+i).val());
+        alert(array[i]);
+      }
   });
 });
-<<<<<<< HEAD
+//     var row = "<tr>";
+//         row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
+//         row+="<td><span>없애는거</span></rrtd>";
+//         row+="</tr>";
+//         $("#table").append(row);
+//
+//   $("#table").on("click","span",function(){
+//     $(this).closest("tr").remove();
+//   });
+// });
 
-=======
->>>>>>> master
 
 
 //일단 하나씪 밀었씁니다
@@ -188,17 +160,14 @@ $(document).on("click", "button",function(){
 	      $(this).parent().parent().children().eq(bIndex).remove();
 		}
   }
-
   });
-
 //tag 개수를 세는 function
 //index개수에 따라 다시 동적 생성하도록
 function CountDiv(bValue){
        var indexNum = $(bValue).parent().index();
        //alert("선택한 엘리먼트의 인덱스 " +indexNum);
        return indexNum;
-
-}
+     };
 
 
 //다음 질문 클릭시 왼쪽 값 우측으로 옮김
