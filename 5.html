@@ -31,33 +31,53 @@ $(document).on("click","#moveBtn",function(){
     var buttonid = $(this).parent().parent().attr("id");
 
     var str = buttonid.split("_");
-  //  alert(str[0]);
+
     var divCount = $('.QuesDiv >').length;
-//    alert(divCount);
-  //  alert('#'+str[0]+"_"+number);
-  //  alert($('#'+buttonid).attr("id")); //
-    //$('#'+str[0]+number).after($('#'+buttonid).clone());
+
 
     $('#'+str[0]+"_"+number).after($('#'+buttonid).clone());
-    $('#'+buttonid).attr("id",str[0]+"_"+number);
-    //$('.QuesDiv').after('<p>dsadasda</p>');
-    $('#'+buttonid).remove();
-    for(var i = number; i<= divCount ; i++){
-        alert("i값 = "+i);
+    var preIndex = $(this).parent().parent().index();
+    $('.QuesDiv').children().eq(preIndex).remove();
+
+    var ormNumber = $('#'+str[0]+"_"+number).index() + 1;
+    alert("ormNumber = " +ormNumber);
+    var changeIndex = parseInt(ormNumber+1);
+    $('.QuesDiv').children().eq(ormNumber).attr("id",str[0]+"_"+changeIndex); //아이디 변경
+
+    //$('#'+buttonid).attr("id",str[0]+"_"+number);
+
+     for(var i = ormNumber-1; i >= preIndex ; i--){
+        var index = i+1
+        $('.QuesDiv').children().eq(i).attr("id",str[0]+"_"+index);
         var h2value = $('#'+str[0]+"_"+i).children().eq(1).text();
-        alert(h2value);
-        array =h2value.split(" ");
-        var k = parseInt(i) +1;
         array[0] = k + ". ";
-        var Fstr="";
-        for(var j = 0; j <2 ; j++){
-          //if(array[j] != null)
-            Fstr += array[j];
-        }
-        alert("fstr =" +Fstr);
-        $('#'+str[0]+"_"+k).children().eq(1).text(Fstr); //텍스트 바꾸기
-        $('#'+str[0]+"_"+k).attr("id" ,str[0]+"_"+k); //아이디 바꾸기
+            var Fstr="";
+            for(var j = 0; j <2 ; j++){
+              //if(array[j] != null)
+                Fstr += array[j];
+            }
+            alert("fstr =" +Fstr);
+            //$('#'+str[0]+"_"+k).children().eq(1).text(Fstr); //텍스트 바꾸기
+            //$('#'+str[0]+"_"+k).attr("id" ,str[0]+"_"+k); //아이디 바꾸기
+
     }
+    // for(var i = number+1; i<= divCount ; i++){
+    //     alert("i값 = "+i);
+    //     var h2value = $('#'+str[0]+"_"+i).children().eq(1).text();
+    //     alert("h2 값 = "+h2value);
+    //     array =h2value.split(" ");
+    //
+    //     var k = parseInt(i) +1;
+    //     array[0] = k + ". ";
+    //     var Fstr="";
+    //     for(var j = 0; j <2 ; j++){
+    //       //if(array[j] != null)
+    //         Fstr += array[j];
+    //     }
+    //     alert("fstr =" +Fstr);
+    //     //$('#'+str[0]+"_"+k).children().eq(1).text(Fstr); //텍스트 바꾸기
+    //     //$('#'+str[0]+"_"+k).attr("id" ,str[0]+"_"+k); //아이디 바꾸기
+    // }
 
 
     //$('#'+buttonid).clone().appendTo('.QuesDiv nth-child('+number+')');
@@ -133,7 +153,7 @@ $(document).on("click","#btn1",function(){
 
 $(document).ready(function(){
   $("#btn1").click(function(){
-  alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
+//  alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
   });
 });
 
