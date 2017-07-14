@@ -22,11 +22,53 @@ $(document).ready(function(){
 });
 
 //각 버튼 별로 function 지정.
-$(document).ready(function(){
-  $("#moveBtn").click(function(){
-    alert("이동버튼");
+$(document).on("click","#moveBtn",function(){
+    //alert("이동버튼");
     //팝업형식으로 창이 뜬다음 임의의 질문 앞으로 or 뒤로 이동할 수 있음.
-  });
+    var number = prompt("원하는 질문");
+  //  var judge = prompt("앞이면 0 뒤면 1");
+    number=parseInt(number)
+    var buttonid = $(this).parent().parent().attr("id");
+
+    var str = buttonid.split("_");
+  //  alert(str[0]);
+    var divCount = $('.QuesDiv >').length;
+//    alert(divCount);
+  //  alert('#'+str[0]+"_"+number);
+  //  alert($('#'+buttonid).attr("id")); //
+    //$('#'+str[0]+number).after($('#'+buttonid).clone());
+
+    $('#'+str[0]+"_"+number).after($('#'+buttonid).clone());
+    $('#'+buttonid).attr("id",str[0]+"_"+number);
+    //$('.QuesDiv').after('<p>dsadasda</p>');
+    $('#'+buttonid).remove();
+    for(var i = number; i<= divCount ; i++){
+        alert("i값 = "+i);
+        var h2value = $('#'+str[0]+"_"+i).children().eq(1).text();
+        alert(h2value);
+        array =h2value.split(" ");
+        var k = parseInt(i) +1;
+        array[0] = k + ". ";
+        var Fstr="";
+        for(var j = 0; j <2 ; j++){
+          //if(array[j] != null)
+            Fstr += array[j];
+        }
+        alert("fstr =" +Fstr);
+        $('#'+str[0]+"_"+k).children().eq(1).text(Fstr); //텍스트 바꾸기
+        $('#'+str[0]+"_"+k).attr("id" ,str[0]+"_"+k); //아이디 바꾸기
+    }
+
+
+    //$('#'+buttonid).clone().appendTo('.QuesDiv nth-child('+number+')');
+
+
+    //뒤로 이동한 경우
+    //이동한 인덱스는 번호가 1씩 증가
+
+
+        //뒤로 옮기자
+
 });
 
 $(document).ready(function(){
@@ -44,21 +86,32 @@ $(document).ready(function(){
 });
 //ㅁㄴ
 //이거바꾼다.
+
+
+
+
 var jilmunCount = 1;
 //오른쪽에 넘기는 동작
-$(document).ready(function(){
-  $("#btn1").click(function(){
+$(document).on("click","#btn1",function(){
+
+    //alert(buttonid);
+//    if(buttonid == "btn1"){
     var divCount = $('.leftDiv #munHang div').length;
     array= [];
     var jil = ($(".leftDiv #munHang #jilmun #mainJilmun").val());
-    alert(jil);
+    //alert(jil);
     for(var i = 1; i < divCount; i++){
         array[i] = ($(".leftDiv #munHang #munDiv #sub_Ques_"+i).val());
       }
-      var jilmunNum = "jilmunNum"+ jilmunCount;
+      var jilmunNum = "jilmunNum_"+ jilmunCount;
       var leftMake = '<div id ='+jilmunNum+'>';
+          leftMake += '<div id="button_div">';
+          leftMake += '<button id="moveBtn">이동</button>';
+          leftMake += '<button id="copyBtn">복사</button>';
+          leftMake += '<button id="deleteBtn">삭제</button>';
+          leftMake += '</div>';
           leftMake +='<h2>'+jilmunCount+". "+ jil;
-          leftMake +='</h2>'
+          leftMake +='</h2>';
 
       for(var i = 1 ; i < array.length; i++){
         leftMake +='<p>'+array[i]+'</p>';
@@ -66,32 +119,14 @@ $(document).ready(function(){
         leftMake +='</div>';
       $(".QuesDiv").append(leftMake);
       jilmunCount +=1;
-=======
-//오른쪽에 넘기는 동작
-$(document).ready(function(){
-  $("#btn1").click(function(){
-    var msg0 = " ";
-    msg0 += $("#Ques").val();
-    var msg1 = " ";
-    msg1 += $('#Ques1').val();
-    var msg2 = " ";
-    msg2 += $("#Ques2").val();
-    var msg3 = " ";
-    msg3 += $("#Ques3").val();
-    $(".QuesDiv").find('#ques>*,#sq>*').each(function(index,item){
-      alert(msg+""+index);
-
-        });
-    var row = "<tr>";
-        row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
-        row+="<td><span>없애는거</span></td>";
-        row+="</tr>";
-        $("#table").append(row);
-});
-  $("#table").on("click","span",function(){
+  //  }
 
   });
-});
+
+
+
+
+
 //이거 바꿈
 
 
@@ -126,9 +161,9 @@ $(document).ready(function(){
 
 //+버튼 -버튼 클릭
 $(document).on("click", "button",function(){
-  var butttonid ='';
+   var butttonid ='';
     buttonid = $(this).attr('id');
-
+    //alert(buttonid);
     var bIndex =CountDiv(this);
     var sqIdValue = "sub_Ques_" +  bIndex;
     var pButtonIdValue = "pButton_" +  bIndex;
@@ -209,15 +244,8 @@ function CountDiv(bValue){
   </div>
 
 <div class ="QuesDiv">
-  <div id = "ques" style="width: 250px;">
-    <input type ='text' id = "Ques"></input>
-  </div>
 
-  <div id="button_div" style="width: 250px;">
-    <button id="moveBtn">이동</button>
-    <button id="copyBtn">복사</button>
-    <button id="deleteBtn">삭제</button>
-  </div>
+
 
 
 </div>
