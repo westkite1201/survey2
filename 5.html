@@ -78,11 +78,17 @@ $(document).ready(function(){
   });
 });
 
-$(document).ready(function(){
-  $("#deleteBtn").click(function(){
-    alert("삭제버튼");
-    //해당 문항을 삭제
-  });
+$(document).on("click","#deleteBtn",function(){
+    var  jilmunTo= $(this).parent().parent().attr("id");
+    var str = buttonid.split("_");
+    var jilmunFrom = $('.QuesDiv>*').length;
+    var bIndex =CountDiv1(this)-1;
+    alert(bIndex);
+    for(var i=jilmunFrom; i>jilmunTo; i--){
+      $(this).parent().children().eq(i+1).children().eq(0).attr("id");
+    }
+    $(this).parent().parent().parent().children().eq(bIndex).remove();
+    bIndex =0;
 });
 //ㅁㄴ
 //이거바꾼다.
@@ -125,6 +131,11 @@ $(document).on("click","#btn1",function(){
 
 
 
+$(document).ready(function(){
+  $("#btn1").click(function(){
+  alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
+  });
+});
 
 
 //이거 바꿈
@@ -222,6 +233,11 @@ function CountDiv(bValue){
        var indexNum = $(bValue).parent().index();
        //alert("선택한 엘리먼트의 인덱스 " +indexNum);
        return indexNum;
+}
+function CountDiv1(bValue){
+       var indexNum = $(bValue).parent().parent().index();
+       //alert("선택한 엘리먼트의 인덱스 " +indexNum);
+       return indexNum+1;
 }
 
 //왼쪽값
