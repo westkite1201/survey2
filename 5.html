@@ -40,55 +40,33 @@ $(document).on("click","#moveBtn",function(){
     var preIndex = $(this).parent().parent().index();
     $('.QuesDiv').children().eq(preIndex).remove();
 
-    var ormNumber = $('#'+str[0]+"_"+number).index() + 1;
-    alert("ormNumber = " +ormNumber);
+    var ormNumber = $('#'+str[0]+"_"+number).index() + 1; //현재
+
     var changeIndex = parseInt(ormNumber+1);
-    $('.QuesDiv').children().eq(ormNumber).attr("id",str[0]+"_"+changeIndex); //아이디 변경
+    $('.QuesDiv').children().eq(ormNumber).attr("id",str[0]+"_"+changeIndex); //맨처음 이동한갑 아이디 변경
 
-    //$('#'+buttonid).attr("id",str[0]+"_"+number);
 
-     for(var i = ormNumber-1; i >= preIndex ; i--){
+
+     for(var i = ormNumber; i >= preIndex ; i--){
         var index = i+1
         $('.QuesDiv').children().eq(i).attr("id",str[0]+"_"+index);
-        var h2value = $('#'+str[0]+"_"+i).children().eq(1).text();
-        array[0] = k + ". ";
-            var Fstr="";
-            for(var j = 0; j <2 ; j++){
-              //if(array[j] != null)
-                Fstr += array[j];
-            }
-            alert("fstr =" +Fstr);
-            //$('#'+str[0]+"_"+k).children().eq(1).text(Fstr); //텍스트 바꾸기
-            //$('#'+str[0]+"_"+k).attr("id" ,str[0]+"_"+k); //아이디 바꾸기
+        var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+        array =h2value.split(" ");
+        var changeText = $('#'+str[0]+"_"+index).attr("id");
+        arrayText =changeText.split("_");
+        array[0] = arrayText[1]+". ";
+
+        var Fstr = "";
+        for(var j = 0 ; j<=array.length; j++){
+          if(array[j] != null){
+            Fstr+= array[j]+ " ";
+          }else if(j == array.length && array[j] != null){
+            Fstr+= array[j];
+          }
+        }
+        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
 
     }
-    // for(var i = number+1; i<= divCount ; i++){
-    //     alert("i값 = "+i);
-    //     var h2value = $('#'+str[0]+"_"+i).children().eq(1).text();
-    //     alert("h2 값 = "+h2value);
-    //     array =h2value.split(" ");
-    //
-    //     var k = parseInt(i) +1;
-    //     array[0] = k + ". ";
-    //     var Fstr="";
-    //     for(var j = 0; j <2 ; j++){
-    //       //if(array[j] != null)
-    //         Fstr += array[j];
-    //     }
-    //     alert("fstr =" +Fstr);
-    //     //$('#'+str[0]+"_"+k).children().eq(1).text(Fstr); //텍스트 바꾸기
-    //     //$('#'+str[0]+"_"+k).attr("id" ,str[0]+"_"+k); //아이디 바꾸기
-    // }
-
-
-    //$('#'+buttonid).clone().appendTo('.QuesDiv nth-child('+number+')');
-
-
-    //뒤로 이동한 경우
-    //이동한 인덱스는 번호가 1씩 증가
-
-
-        //뒤로 옮기자
 
 });
 
