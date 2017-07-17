@@ -33,45 +33,44 @@ $(document).on("click","#moveBtn",function(){
     var divCount = $('.QuesDiv >').length;
 
     if(judge == 0){
+      //위면 무조건
+      //밑번호에서 위번호는 ㅇㅋ
+      //위번호에서 밑번호 x
       alert("gg");
-      $('#'+str[0]+"_"+number).before($('#'+buttonid).clone());
       var preIndex = $(this).parent().parent().index(); //버튼 누른 div인덱스 값
+      var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
       $('.QuesDiv').children().eq(preIndex).remove();
 
-      var ormNumber = $('#'+str[0]+"_"+number).index() - 1; //현재 5->2  값 3
-      var changeIndex = parseInt(ormNumber+1); // 1을 더하는 이후는 아이디 값을 맞추기위해
-      $('.QuesDiv').children().eq(ormNumber).attr("id",str[0]+"_"+changeIndex); //맨처음 이동한갑 아이디 변경
-      alert(preIndex);
-      alert(ormNumber);
-      //1에서 3위로 했을떄
-      //preIndex = 0; ormNumber =1 change =2 해결
+      $('#'+str[0]+"_"+number).before(jilmunClone);
+      var jilmunto = $('#'+buttonid).index();
 
-      //5에서 1 위로 했을때
-      //preIndex =4 ; ormNumber =0;
-      if(preIndex < ormNumber){
+      //위번호에서 밑번호로 이동
+       if(preIndex < jilmunto){
         var temp = preIndex;
-        preIndex = ormNumber;
-        ormNumber = temp;
+         preIndex = jilmunto;
+         jilmunto = temp;
       }
-      for(var i = preIndex; i >=ormNumber; i--){
-          var index = i+1;
-          $('.QuesDiv').children().eq(i).attr("id",str[0]+"_"+index);
-          var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
-          array =h2value.split(" ");
-          var changeText = $('#'+str[0]+"_"+index).attr("id");
-          arrayText =changeText.split("_");
-          array[0] = arrayText[1]+". ";
-          var Fstr = "";
-          for(var j = 0 ; j<=array.length; j++){
-            if(array[j] != null){
+
+      for(var i = jilmunto; i<= preIndex; i++){
+        index = i+1;
+        $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
+        var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+        array =h2value.split(" ");
+        var changeText = $('#'+str[0]+"_"+index).attr("id");
+        arrayText =changeText.split("_");
+        array[0] = arrayText[1]+". ";
+        var Fstr = "";
+        for(var j = 0 ; j<=array.length; j++){
+          if(array[j] != null){
               Fstr+= array[j]+ " ";
-            }else if(j == array.length && array[j] != null){
+          }else if(j == array.length && array[j] != null){
               Fstr+= array[j];
-            }
+              }
           }
           $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
-      }
+        }
   }
+
 
   //위에서 밑으로는 됨
   //밑 번호에서는 안됨
@@ -81,81 +80,132 @@ $(document).on("click","#moveBtn",function(){
 
   else if(judge == 1){
     alert("밑으로");
-    $('#'+str[0]+"_"+number).after($('#'+buttonid).clone());
-    var preIndex = $(this).parent().parent().index();
+    alert("gg");
+
+    var preIndex = $(this).parent().parent().index(); //버튼 누른 div인덱스 값
+    var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
     $('.QuesDiv').children().eq(preIndex).remove();
-    var ormNumber = $('#'+str[0]+"_"+number).index() + 1; //현재
-    var changeIndex = parseInt(ormNumber+1);
-      $('.QuesDiv').children().eq(ormNumber).attr("id",str[0]+"_"+changeIndex); //맨처음 이동한갑 아이디 변경
 
-    if(preIndex > ormNumber){
+    $('#'+str[0]+"_"+number).after(jilmunClone);
+    var jilmunto = $('#'+buttonid).index();
+
+    //위번호에서 밑번호로 이동
+     if(preIndex < jilmunto){
       var temp = preIndex;
-      preIndex = ormNumber;
-      ormNumber = temp;
+       preIndex = jilmunto;
+       jilmunto = temp;
     }
-    //5에서 1 선택 한 경우
-    alert(ormNumber); //5
-    alert(preIndex); //1
-
-     for(var i = ormNumber; i >= preIndex ; i--){
-        var index = i+1
-        $('.QuesDiv').children().eq(i).attr("id",str[0]+"_"+index);
-        var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
-        array =h2value.split(" ");
-        var changeText = $('#'+str[0]+"_"+index).attr("id");
-        arrayText =changeText.split("_");
-        array[0] = arrayText[1]+". ";
-        var Fstr = "";
-        for(var j = 0 ; j<=array.length; j++){
-          if(array[j] != null){
+    for(var i = jilmunto; i<= preIndex; i++){
+      index = i+1;
+      $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
+      var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+      array =h2value.split(" ");
+      var changeText = $('#'+str[0]+"_"+index).attr("id");
+      arrayText =changeText.split("_");
+      array[0] = arrayText[1]+". ";
+      var Fstr = "";
+      for(var j = 0 ; j<=array.length; j++){
+        if(array[j] != null){
             Fstr+= array[j]+ " ";
-          }else if(j == array.length && array[j] != null){
+        }else if(j == array.length && array[j] != null){
             Fstr+= array[j];
-          }
+            }
         }
         $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
-    }
-
-
-
+      }
   }
 });
-$(document).on("click","#copyBtn",function(){
-    var number = prompt("원하는 질문");
-    //var judge = prompt("위로 0 밑으로 1");
-    number=parseInt(number);
-    //judge = parseInt(judge);
-    var buttonid = $(this).parent().parent().attr("id");  //질문_n
-    var str = buttonid.split("_");
-    var divCount = $('.QuesDiv >').length;
-    //if(judge == 0){
-    //위로
-      $('#'+str[0]+"_"+number).before($('#'+buttonid).clone());
-      var preIndex = $(this).parent().parent().index(); //버튼 누른 div인덱스 값
-      var ormNumber = $('#'+str[0]+"_"+number).index() - 1; //현재 5->2  값 3
-      var changeIndex = parseInt(ormNumber+1); // 1을 더하는 이후는 아이디 값을 맞추기위해
-      $('.QuesDiv').children().eq(ormNumber).attr("id",str[0]+"_"+changeIndex); //맨처음 이동한갑 아이디 변경
 
-      for(var i = preIndex+1; i >=ormNumber; i--){
-        alert("i");
-          var index = i+1;
-          $('.QuesDiv').children().eq(i).attr("id",str[0]+"_"+index);
-          var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
-          array =h2value.split(" ");
-          var changeText = $('#'+str[0]+"_"+index).attr("id");
-          arrayText =changeText.split("_");
-          array[0] = arrayText[1]+". ";
-          var Fstr = "";
-          for(var j = 0 ; j<=array.length; j++){
-            if(array[j] != null){
-              Fstr+= array[j]+ " ";
-            }else if(j == array.length && array[j] != null){
-              Fstr+= array[j];
+
+$(document).on("click","#copyBtn",function(){
+  //alert("이동버튼");
+  //팝업형식으로 창이 뜬다음 임의의 질문 앞으로 or 뒤로 이동할 수 있음.
+  var number = prompt("원하는 질문");
+  var judge = prompt("위로 0 밑으로 1");
+//
+  number=parseInt(number);
+  judge = parseInt(judge);
+  var buttonid = $(this).parent().parent().attr("id");  //질문_n
+  var str = buttonid.split("_");
+  var divCount = $('.QuesDiv >').length;
+
+  if(judge == 0){
+    //위면 무조건
+    //밑번호에서 위번호는 ㅇㅋ
+    //위번호에서 밑번호 x
+    alert("gg");
+    var preIndex = $(this).parent().parent().index() ; //버튼 누른 div인덱스 값
+    var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
+    $('#'+str[0]+"_"+number).before(jilmunClone);
+    var jilmunto = $('#'+buttonid).index();
+
+    //위번호에서 밑번호로 이동
+     if(preIndex < jilmunto){
+      var temp = preIndex;
+       preIndex = jilmunto;
+       jilmunto = temp;
+    }
+
+    var divCount = $('.QuesDiv >').length;
+    for(var i = jilmunto; i < divCount; i++){
+      index = i+1;
+      $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
+      var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+      array =h2value.split(" ");
+      var changeText = $('#'+str[0]+"_"+index).attr("id");
+      alert(changeText);
+      arrayText =changeText.split("_");
+      array[0] = arrayText[1]+". ";
+      var Fstr = "";
+      for(var j = 0 ; j<=array.length; j++){
+        if(array[j] != null){
+            Fstr+= array[j]+ " ";
+        }else if(j == array.length && array[j] != null){
+            Fstr+= array[j];
             }
-          }
-          $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+        }
+        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
       }
-    //}
+}
+
+else if(judge == 1){
+
+  var preIndex = $(this).parent().parent().index(); //버튼 누른 div인덱스 값
+  var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
+  $('#'+str[0]+"_"+number).after(jilmunClone);
+  var jilmunto = $('#'+buttonid).index();
+
+   if(preIndex < jilmunto){
+    var temp = preIndex;
+     preIndex = jilmunto;
+     jilmunto = temp;
+  }
+  var divCount = $('.QuesDiv >').length;
+  for(var i = jilmunto; i< divCount; i++){
+    index = i+1;
+    $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
+    var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+
+    array =h2value.split(" ");
+    var changeText = $('#'+str[0]+"_"+index).attr("id");
+    arrayText =changeText.split("_");
+    array[0] = arrayText[1]+". ";
+    var Fstr = "";
+    for(var j = 0 ; j<=array.length; j++){
+      if(array[j] != null){
+          Fstr+= array[j]+ " ";
+      }else if(j == array.length && array[j] != null){
+          Fstr+= array[j];
+          }
+      }
+      $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+    }
+}
+
+
+
+
+
 });
 
 $(document).on("click","#deleteBtn",function(){
