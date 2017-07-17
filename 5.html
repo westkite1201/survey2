@@ -119,11 +119,11 @@ $(document).on("click","#btn1",function(){
       jilmunCount +=1;
   });
 
-$(document).ready(function(){
-  $("#btn1").click(function(){
-    alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
-  });
-});
+// $(document).ready(function(){
+//   $("#btn1").click(function(){
+//     alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
+//   });
+// });
 
 //copyBtn 눌렀을 때 현재 질문의 id값 출력.
 $(document).on("click", "#copyBtn", function(){
@@ -330,20 +330,9 @@ $(document).ready(function(){
 <button id="btn2">+</button>
 
 <div id="moveDialog" title="이동">
-  <button id=beforeMove>앞으로 이동</button>
-  <select style="width: 100%;">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-  </select>
-  <button id=afterMove>뒤로 이동</button>
 </div>
 
 <div id="copyDialog" title="복사">
 </div>
-
-<input type="button" id="movePopup" value="click"/>
-
 </body>
 </html>
