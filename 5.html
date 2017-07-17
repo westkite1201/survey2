@@ -2,7 +2,9 @@
 <html>
 <head>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script>
 //드롭다운 버튼 만들기
 
@@ -21,60 +23,167 @@ $(document).ready(function(){
   });
 });
 
-//각 버튼 별로 function 지정.
-$(document).ready(function(){
-  $("#moveBtn").click(function(){
-    alert("이동버튼");
+$(document).on("click","#moveBtn",function(){
     //팝업형식으로 창이 뜬다음 임의의 질문 앞으로 or 뒤로 이동할 수 있음.
-  });
+
+    $("#moveDialog").empty();
+
+    var countIndex = null;
+
+    countIndex = $('.QuesDiv div').length / 2;
+    alert(countIndex);
+
+    var copyTest ='<div id= "moveDialog" title="이동">';
+        copyTest +='<button id="앞으로 이동">앞으로이동</button>';
+        copyTest +='<select style="width:100%";>';
+        for( var i = 1; i < countIndex + 1; i++ ){
+          copyTest +='<option value="' + i + '">' + i + '</option>';
+        }
+        copyTest +='</select>';
+        copyTest +='<button id="뒤로 이동">뒤로이동</button>';
+
+    $("#moveDialog").append(copyTest);
+    $("#moveDialog").append('</div>');
+    $("#moveDialog").dialog("open");
+
+    var number = prompt("원하는 질문");
+
+    number=parseInt(number)
+    var buttonid = $(this).parent().parent().attr("id");
+    var str = buttonid.split("_");
+    var divCount = $('.QuesDiv >').length;
+    $('#'+str[0]+"_"+number).after($('#'+buttonid).clone());
+    var preIndex = $(this).parent().parent().index();
+    $('.QuesDiv').children().eq(preIndex).remove();
+    var ormNumber = $('#'+str[0]+"_"+number).index() + 1; //현재
+    var changeIndex = parseInt(ormNumber+1);
+    $('.QuesDiv').children().eq(ormNumber).attr("id",str[0]+"_"+changeIndex); //맨처음 이동한갑 아이디 변경
+     for(var i = ormNumber; i >= preIndex ; i--){
+        var index = i+1
+        $('.QuesDiv').children().eq(i).attr("id",str[0]+"_"+index);
+        var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+        array =h2value.split(" ");
+        var changeText = $('#'+str[0]+"_"+index).attr("id");
+        arrayText =changeText.split("_");
+        array[0] = arrayText[1]+". ";
+        var Fstr = "";
+        for(var j = 0 ; j<=array.length; j++){
+          if(array[j] != null){
+            Fstr+= array[j]+ " ";
+          }else if(j == array.length && array[j] != null){
+            Fstr+= array[j];
+          }
+        }
+        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+    }
 });
 
-$(document).ready(function(){
-  $("#copyBtn").click(function(){
-    alert("복사버튼");
-    //해당 문항을 다음에 복사
-  });
+$(document).on("click","#deleteBtn",function(){
+    var  jilmunTo= $(this).parent().parent().attr("id");
+    var str = buttonid.split("_");
+    var jilmunFrom = $('.QuesDiv>*').length;
+    var bIndex =CountDiv1(this)-1;
+    alert(bIndex);
+    for(var i=jilmunFrom; i>jilmunTo; i--){
+      $(this).parent().children().eq(i+1).children().eq(0).attr("id");
+    }
+    $(this).parent().parent().parent().children().eq(bIndex).remove();
+    bIndex =0;
 });
 
-$(document).ready(function(){
-  $("#deleteBtn").click(function(){
-    alert("삭제버튼");
-    //해당 문항을 삭제
-  });
-});
-
+var jilmunCount = 1;
 //오른쪽에 넘기는 동작
+$(document).on("click","#btn1",function(){
+
+    var divCount = $('.leftDiv #munHang div').length;
+    array= [];
+    var jil = ($(".leftDiv #munHang #jilmun #mainJilmun").val());
+    for(var i = 1; i < divCount; i++){
+        array[i] = ($(".leftDiv #munHang #munDiv #sub_Ques_"+i).val());
+      }
+      var jilmunNum = "jilmunNum_"+ jilmunCount;
+      var leftMake = '<div id ='+jilmunNum+'>';
+          leftMake += '<div id="button_div">';
+          leftMake += '<button id="moveBtn">이동</button>';
+          leftMake += '<button id="copyBtn">복사</button>';
+          leftMake += '<button id="deleteBtn">삭제</button>';
+          leftMake += '</div>';
+          leftMake +='<h2>'+jilmunCount+". "+ jil;
+          leftMake +='</h2>';
+
+      for(var i = 1 ; i < array.length; i++){
+        leftMake +='<p>'+array[i]+'</p>';
+      }
+        leftMake +='</div>';
+      $(".QuesDiv").append(leftMake);
+      jilmunCount +=1;
+  });
+
 $(document).ready(function(){
   $("#btn1").click(function(){
-    var msg0 = " ";
-    msg0 += $("#Ques").val();
-    var msg1 = " ";
-    msg1 += $('#Ques1').val();
-    var msg2 = " ";
-    msg2 += $("#Ques2").val();
-    var msg3 = " ";
-    msg3 += $("#Ques3").val();
-    $(".QuesDiv").find('#ques>*,#sq>*').each(function(index,item){
-      alert(msg+""+index);
-
-        });
-    var row = "<tr>";
-        row+="<td><input type ='text' name = 'idx[]' value=입력하세요></td>";
-        row+="<td><span>없애는거</span></td>";
-        row+="</tr>";
-        $("#table").append(row);
-});
-  $("#table").on("click","span",function(){
-    $(this).closest("tr").remove();
+    alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
   });
 });
 
+//copyBtn 눌렀을 때 현재 질문의 id값 출력.
+$(document).on("click", "#copyBtn", function(){
+  $("#copyDialog").empty();
 
+  var countIndex = null;
 
+  countIndex = $('.QuesDiv div').length / 2;
+  alert(countIndex);
 
+  var copyTest ='<div id= "copyDialog" title="복사">';
+      copyTest +='<button id="앞으로 복사">앞으로복사</button>';
+      copyTest +='<select style="width:100%";>';
+      for( var i = 1; i < countIndex + 1; i++ ){
+        copyTest +='<option value="' + i + '">' + i + '</option>';
+      }
+      copyTest +='</select>';
+      copyTest +='<button id="뒤로 복사">뒤로복사</button>';
+
+  $("#copyDialog").append(copyTest);
+  $("#copyDialog").append('</div>');
+  $("#copyDialog").dialog("open");
+
+  var number = prompt("원하는 질문");
+
+  number=parseInt(number)
+  var buttonid = $(this).parent().parent().attr("id");
+  var str = buttonid.split("_");
+  var divCount = $('.QuesDiv >').length;
+  $('#'+str[0]+"_"+number).after($('#'+buttonid).clone());
+  var preIndex = $(this).parent().parent().index();
+  //$('.QuesDiv').children().eq(preIndex).remove(); //원위치의 질문 삭제하기
+  var ormNumber = $('#'+str[0]+"_"+number).index() + 1; //현재
+  var changeIndex = parseInt(ormNumber+1);
+  $('.QuesDiv').children().eq(ormNumber).attr("id",str[0]+"_"+changeIndex); //맨처음 이동한갑 아이디 변경
+   for(var i = jilmunCount; i >= preIndex ; i--){
+      var index = i+1
+      $('.QuesDiv').children().eq(i).attr("id",str[0]+"_"+index);
+      var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+      array =h2value.split(" ");
+      var changeText = $('#'+str[0]+"_"+index).attr("id");
+      arrayText =changeText.split("_");
+      array[0] = arrayText[1]+". ";
+      var Fstr = "";
+      for(var j = 0 ; j<=array.length; j++){
+        if(array[j] != null){
+          Fstr+= array[j]+ " ";
+        }else if(j == array.length && array[j] != null){
+          Fstr+= array[j];
+        }
+      }
+      $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+  }
+  alert($(this).parent().parent().attr("id"));
+});
+
+//일단 하나씪 밀었씁니다
 //input 값 동적생성
 //drop down 버튼에 따라서 동적 생성되는 값이 달라야함
-var defalut = 3;
+var defalut = 4;
 $(document).ready(function(){
       var munHangIdValue = "munHang";
       var mNum =1;
@@ -96,14 +205,12 @@ $(document).ready(function(){
         mNum = i+1;
       }
       $('.leftDiv').append('</div>');
-    //});
 });
 
 //+버튼 -버튼 클릭
 $(document).on("click", "button",function(){
-  var butttonid ='';
+   var butttonid ='';
     buttonid = $(this).attr('id');
-
     var bIndex =CountDiv(this);
     var sqIdValue = "sub_Ques_" +  bIndex;
     var pButtonIdValue = "pButton_" +  bIndex;
@@ -125,7 +232,6 @@ $(document).on("click", "button",function(){
       var divCount = $('.leftDiv #munHang div').length;
       //추가후 아이디값 변경
       for(var i = bIndex+1; i< divCount; i++){
-        //alert("i 값 =" + i);
         sqIdValue = "sub_Ques_" +  i;
         pButtonIdValue = "pButton_" +  i;
         mButtonIdValue = "mButton_" +  i;
@@ -155,15 +261,40 @@ $(document).on("click", "button",function(){
 	      $(this).parent().parent().children().eq(bIndex).remove();
 		}
   }
-});
-
+  });
 //tag 개수를 세는 function
 //index개수에 따라 다시 동적 생성하도록
 function CountDiv(bValue){
        var indexNum = $(bValue).parent().index();
-       //alert("선택한 엘리먼트의 인덱스 " +indexNum);
        return indexNum;
 }
+
+function CountDiv1(bValue){
+       var indexNum = $(bValue).parent().parent().index();
+       return indexNum+1;
+}
+
+var x = null;
+var y = null;
+
+$(document).ready(function(){
+  $(document).mousemove(function(e){
+    x = e.clientX;
+    y = e.clientY;
+  });
+
+  $("#copyDialog").dialog({
+    autoOpen: false,
+    position: [x, y],
+    resizable: false,
+  });
+
+  $("#moveDialog").dialog({
+    autoOpen: false,
+    position: [x, y],
+    resizable: false,
+  });
+});
 
 //왼쪽값
 </script>
@@ -185,25 +316,34 @@ function CountDiv(bValue){
   </div>
 
 <div class ="QuesDiv">
-  <div id = "ques" style="width: 250px;">
-    <input type ='text' id = "Ques"></input>
-  </div>
 
-  <div id="button_div" style="width: 250px;">
-    <button id="moveBtn">이동</button>
-    <button id="copyBtn">복사</button>
-    <button id="deleteBtn">삭제</button>
-  </div>
-
-  <div id ="sq">
-    <input type ='text' id = "sub_Ques1"></input>
-    <input type ='text' id = "sub_Ques2"></input>
-    <input type ='text' id = "sub_Ques3"></input>
-  </div>
 </div>
+
+<table id="table">
+  <tr>
+    <td><input type = "text"/></td>
+  </tr>
+  <tbody></tbody>
+</table>
 
 <button id="btn1">Append text</button>
 <button id="btn2">+</button>
+
+<div id="moveDialog" title="이동">
+  <button id=beforeMove>앞으로 이동</button>
+  <select style="width: 100%;">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </select>
+  <button id=afterMove>뒤로 이동</button>
+</div>
+
+<div id="copyDialog" title="복사">
+</div>
+
+<input type="button" id="movePopup" value="click"/>
 
 </body>
 </html>
