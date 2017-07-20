@@ -21,77 +21,63 @@ $(document).ready(function(){
 });
 
 //질문클릭시 왼쪽으로 값 넘기기
-$(document).on("click", ".QuesDiv div:not(#button_div) button",function(){
+
+
+
+$(document).on("click", ".QuesDiv div:not(#button_div)",function(){
+  var flag = false;
+  $(document).on("click",".QuesDiv div > button",function(){ //버튼을 눌렀을때
+    //alert("실행");
+    flag = true;
+    return false;
+  });
+  if(flag){
+    return false;
+  }
    var buttonid = $(this).attr("id");
-   //alert(buttonid)
-   //var divCount = $('#' +buttonid + ' >').not("#button_div").length;
    array = [];
    //값 가져오기
-
-   var jilminNumber = $(this).index();
-   alert(jilminNumber);
+   var jilminNumber = $(this).index()+1;
 
     $('#' +buttonid + ' >').not("#button_div").each(function(index){
      if($(this).text()){
+       if(index == 0){
+         var str=$(this).text().split(" ");
+         array.push(str[1]);
+       }else{
         array.push($(this).text());
+        }
       }
-
     });
 
-   for(var i = 0 ; i <array.length; i++){
-      alert(array[i]);
-    }
-
-
+    makeJilMun(array,jilminNumber);
  });
 
- function clickAndMake(array,butttonid){
-     //alert(buttonid);
-     var bIndex =CountDiv(this);
-     var sqIdValue = "sub_Ques_" +  bIndex;
-     var pButtonIdValue = "pButton_" +  bIndex;
-     var mButtonIdValue = "mButton_" +  bIndex;
-     var munDiv ="munDiv";
-     //삽입될떄 버튼의 아이디 값도 한칸씩 밀려야한다.
-     var str = buttonid.split("_");
-     //+버튼일때!
-     if(str[0] == "pButton"){
-       var inputVal = '<div id =' +munDiv+'>';
-           inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
-           inputVal +='<button id ='+pButtonIdValue+'>+</button>'
-           inputVal +='<button id ='+mButtonIdValue+'>-</button>'
-           inputVal +='</div>';
-       //div 동적생성
-       $(this).parent().after(inputVal);
-       var divCount = $('.leftDiv #munHang div').length;
-       //추가후 아이디값 변경
-       for(var i = bIndex+1; i< divCount; i++){
-         //alert("i 값 =" + i);
-         sqIdValue = "sub_Ques_" +  i;
-         pButtonIdValue = "pButton_" +  i;
-         mButtonIdValue = "mButton_" +  i;
-         $(this).parent().parent().children().eq(i).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
-         $(this).parent().parent().children().eq(i).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
-         $(this).parent().parent().children().eq(i).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
-       }
-     }else if(str[0] == 'mButton'){
-       var divCount = $('.leftDiv #munHang div').length;
- 			if(divCount == 2){
- 				alert("더 이상 삭제하실수 없습니다")
- 			}
- 			else{
-       	//밑에 있는 인덱스를 1씩 감소시켜
- 	      for(var i = divCount-2; i >= bIndex; i--){
- 	        sqIdValue = "sub_Ques_" +  i;
- 	        pButtonIdValue = "pButton_" +  i;
- 	        mButtonIdValue = "mButton_" +  i;
- 	    		$(this).parent().parent().children().eq(i+1).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
- 	        $(this).parent().parent().children().eq(i+1).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
- 	        $(this).parent().parent().children().eq(i+1).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
- 	      }
- 	      $(this).parent().parent().children().eq(bIndex).remove();
- 		}
-   }
+ function makeJilMun(array,jilminNumber){
+   //alert("살행입니다");
+   //$(".leftDiv >").not(".select").not("#jooDiv").remove();
+   $(".leftDiv > #munHang").remove();
+   var defalut = array.length-1; //
+   var munHangIdValue = "munHang";
+   var mNum =jilminNumber;
+   var munDiv ="munDiv";
+    $(".leftDiv").append('<div id = ' +munHangIdValue+'>'+'<div id ="jilmun"><input type ="text" id ="mainJilmun"></div>');
+    $("#mainJilmun").val(array[0]);
+         //div안에 인풋태그를 동적 생성하여 넣어야함
+    for(var  i= 1 ; i <= defalut ; i++){
+           var sqIdValue = "sub_Ques_" +  i;
+           var pButtonIdValue = "pButton_" +  i;
+           var mButtonIdValue = "mButton_" +  i;
+           var inputVal = '<div id =' +munDiv+'>';
+               inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
+               inputVal +='<button id ='+pButtonIdValue+'>+</button>'
+               inputVal +='<button id ='+mButtonIdValue+'>-</button>'
+               inputVal +='</div>'
+           $(".leftDiv #munHang").append(inputVal);
+
+           $("#"+sqIdValue).val(array[i]);
+         }
+         $('.leftDiv').append('</div>');
  }
 
 
@@ -432,6 +418,16 @@ function CountDiv1(bValue){
        return indexNum+1;
 }
 //왼쪽값
+$(document).ready(function(){
+$('.QuesDiv div').mouseover(function(){
+  alert($(this).attr("id"));
+    });
+ });
+
+
+
+
+
 </script>
 </head>
 <body>
@@ -450,6 +446,10 @@ function CountDiv1(bValue){
     </div>
   </div>
 
+<div class = "alpha">
+
+</div>
+
 <div class ="QuesDiv">
 
 
@@ -460,16 +460,16 @@ function CountDiv1(bValue){
     <button id="copyBtn">복사</button>
     <button id="deleteBtn">삭제</button></div>
   <h2>1. 1</h2>
-  <p></p><p></p><p></p></div>
+  <p>1</p><p>2</p><p>3</p></div>
   <div id="jilmunNum_2">
     <div id="button_div">
     <button id="moveBtn">이동</button>
     <button id="copyBtn">복사</button>
     <button id="deleteBtn">삭제</button></div>
-  <h2>2. 2</h2><p></p><p></p><p></p></div>
+  <h2>2. 2</h2><p>4</p><p>5</p><p>6</p></div>
   <div id="jilmunNum_3">
     <div id="button_div">
-    <button id="moveBtn">이동</button><button id="copyBtn">복사</button><button id="deleteBtn">삭제</button></div><h2>3. 3</h2><p></p><p></p><p></p></div>
+    <button id="moveBtn">이동</button><button id="copyBtn">복사</button><button id="deleteBtn">삭제</button></div><h2>3. 3</h2><p>7</p><p>8</p><p>9</p></div>
     <div id="jilmunNum_4">
       <div id="button_div">
       <button id="moveBtn">이동</button>
@@ -477,14 +477,14 @@ function CountDiv1(bValue){
       <button id="deleteBtn">삭제</button>
     </div>
     <h2>4. 4</h2>
-    <p></p><p></p><p></p>
+    <p>10</p><p>11</p><p>12</p>
   </div>
     <div id="jilmunNum_5">
       <div id="button_div">
       <button id="moveBtn">이동</button>
       <button id="copyBtn">복사</button>
       <button id="deleteBtn">삭제</button></div>
-      <h2>5. 5</h2><p></p><p></p><p></p>
+      <h2>5. 5</h2><p>13</p><p>14</p><p>15</p>
     </div>
 
 
