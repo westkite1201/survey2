@@ -34,7 +34,7 @@ $(document).on("click","#moveBtn",function(){
     alert(countIndex);
 
     var copyTest ='<button id="before_Move">앞으로이동</button>';
-        copyTest +='<select style="width:100%";>';
+        copyTest +='<select id="move_Select" style="width:100%";>';
         for( var i = 1; i < countIndex + 1; i++ ){
           copyTest +='<option value="' + i + '">' + i + '</option>';
         }

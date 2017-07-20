@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+<script>
+//드롭다운 버튼 만들기
+//select option "객관식" or "주관식"
+$(document).ready(function(){
+  $("#select").on('change', function(){
+    var id_val = $(this).val();
+    if( id_val == 'gaek' ){
+      $('#munHang').toggle();
+      $('#jooDiv').toggle();
+    }
+    else{
+      $('#munHang').toggle();
+      $('#jooDiv').toggle();
+    }
+  });
+});
+//질문클릭시 왼쪽으로 값 넘기기
+$(document).on("click", ".QuesDiv div:not(#button_div) button",function(){
+   var buttonid = $(this).attr("id");
+   //alert(buttonid)
+   //var divCount = $('#' +buttonid + ' >').not("#button_div").length;
+   array = [];
+   //값 가져오기
+   var jilminNumber = $(this).index();
+   alert(jilminNumber);
+    $('#' +buttonid + ' >').not("#button_div").each(function(index){
+     if($(this).text()){
+        array.push($(this).text());
+      }
+    });
+   for(var i = 0 ; i <array.length; i++){
+      alert(array[i]);
+    }
+ });
+ function clickAndMake(array,butttonid){
+     //alert(buttonid);
+     var bIndex =CountDiv(this);
+     var sqIdValue = "sub_Ques_" +  bIndex;
+     var pButtonIdValue = "pButton_" +  bIndex;
+     var mButtonIdValue = "mButton_" +  bIndex;
+     var munDiv ="munDiv";
+     //삽입될떄 버튼의 아이디 값도 한칸씩 밀려야한다.
+     var str = buttonid.split("_");
+     //+버튼일때!
+     if(str[0] == "pButton"){
+       var inputVal = '<div id =' +munDiv+'>';
+           inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
+           inputVal +='<button id ='+pButtonIdValue+'>+</button>'
+           inputVal +='<button id ='+mButtonIdValue+'>-</button>'
+           inputVal +='</div>';
+       //div 동적생성
+       $(this).parent().after(inputVal);
+       var divCount = $('.leftDiv #munHang div').length;
+       //추가후 아이디값 변경
+       for(var i = bIndex+1; i< divCount; i++){
+         //alert("i 값 =" + i);
+         sqIdValue = "sub_Ques_" +  i;
+         pButtonIdValue = "pButton_" +  i;
+         mButtonIdValue = "mButton_" +  i;
+         $(this).parent().parent().children().eq(i).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
+         $(this).parent().parent().children().eq(i).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
+         $(this).parent().parent().children().eq(i).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
+       }
+     }else if(str[0] == 'mButton'){
+       var divCount = $('.leftDiv #munHang div').length;
+ 			if(divCount == 2){
+ 				alert("더 이상 삭제하실수 없습니다")
+ 			}
+ 			else{
+       	//밑에 있는 인덱스를 1씩 감소시켜
+ 	      for(var i = divCount-2; i >= bIndex; i--){
+ 	        sqIdValue = "sub_Ques_" +  i;
+ 	        pButtonIdValue = "pButton_" +  i;
+ 	        mButtonIdValue = "mButton_" +  i;
+ 	    		$(this).parent().parent().children().eq(i+1).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
+ 	        $(this).parent().parent().children().eq(i+1).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
+ 	        $(this).parent().parent().children().eq(i+1).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
+ 	      }
+ 	      $(this).parent().parent().children().eq(bIndex).remove();
+ 		}
+   }
+ }
+//각 버튼 별로 function 지정.
+$(document).on("click","#moveBtn",function(){
+  $("#moveDialog").empty();
+
+  var countIndex = null;
+  countIndex = $('.QuesDiv div').length / 2;
+  alert(countIndex);
+
+  var copyTest ='<select id="move_Select" style="width:100%";>';
+      for( var i = 1; i < countIndex + 1; i++ ){
+        copyTest +='<option value="' + i + '">' + i + '</option>';
+      }
+      copyTest +='</select>';
+  $("#moveDialog").append(copyTest);
+  $("#moveDialog").data("obj", $(this)).dialog("open");
+});
+
+$(document).on("click","#copyBtn",function(){
+  $("#copyDialog").empty();
+
+  var countIndex = null;
+
+  countIndex = $('.QuesDiv div').length / 2;
+  alert(countIndex);
+
+  // var copyTest ='<button id="before_Copy">앞으로복사</button>';
+  var copyTest ='<select id="copy_Select" style="width:100%";>';
+      for( var i = 1; i < countIndex + 1; i++ ){
+        copyTest +='<option value="' + i + '">' + i + '</option>';
+      }
+      copyTest +='</select>';
+      // copyTest +='<button id="after_Copy">뒤로복사</button>';
+
+  $("#copyDialog").append(copyTest);
+  $("#copyDialog").data("obj", $(this)).dialog("open");
+
+});
+
+$(document).on("click","#deleteBtn",function(){
+      var jilmunFrom= $(this).parent().parent().index(); //삭제 버튼 누른 위치
+      var jilmunTo = $('.QuesDiv > *').length;           //모든 질문 문항 개수
+      var idValue = $(this).parent().parent().attr("id") ;
+      array = [];
+      array = idValue.split("_");
+      $('.QuesDiv').children().eq(jilmunFrom).remove();
+      //삭제는 현재위치 삭제한후 아이디값을 1씩 줄이면 됨
+      for(var i=jilmunFrom; i< jilmunTo; i++){
+        var index = parseInt(i+1)
+        $('.QuesDiv').children().eq(i).attr("id",array[0]+"_"+index);
+        var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+        h2valArray =h2value.split(" ");
+        h2valArray[0] = index+". ";
+        var Fstr = "";
+        for(var j = 0 ; j<=h2valArray.length; j++){
+          if(h2valArray[j] != null){
+            Fstr+= h2valArray[j]+ " ";
+          }else if(j == h2valArray.length && h2valArray[j] != null){
+            Fstr+= h2valArray[j];
+          }
+        }
+        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+    }
+});
+
+var jilmunCount = $('.QuesDiv div').length;
+
+$(document).on("click","#btn1",function(){
+
+    var divCount = $('.leftDiv #munHang div').length;
+    array= [];
+    var jil = ($(".leftDiv #munHang #jilmun #mainJilmun").val());
+    for(var i = 1; i < divCount; i++){
+        array[i] = ($(".leftDiv #munHang #munDiv #sub_Ques_"+i).val());
+      }
+      var jilmunNum = "jilmunNum_"+ jilmunCount;
+      var leftMake = '<div id ='+jilmunNum+'>';
+          leftMake += '<div id="button_div">';
+          leftMake += '<button id="moveBtn">이동</button>';
+          leftMake += '<button id="copyBtn">복사</button>';
+          leftMake += '<button id="deleteBtn">삭제</button>';
+          leftMake += '</div>';
+          leftMake +='<h2>'+jilmunCount+". "+ jil;
+          leftMake +='</h2>';
+      for(var i = 1 ; i < array.length; i++){
+        leftMake +='<p>'+array[i]+'</p>';
+      }
+        leftMake +='</div>';
+      $(".QuesDiv").append(leftMake);
+      jilmunCount +=1;
+  });
+$(document).ready(function(){
+  $("#btn1").click(function(){
+  });
+});
+//이거 바꿈
+//일단 하나씪 밀었씁니다
+//input 값 동적생성
+//drop down 버튼에 따라서 동적 생성되는 값이 달라야함
+var defalut = 4;
+$(document).ready(function(){
+      var munHangIdValue = "munHang";
+      var mNum =1;
+      var munDiv ="munDiv";
+      $(".leftDiv").append('<div id = ' +munHangIdValue+'>'+ '<div id ="jilmun"><input type ="text" id ="mainJilmun"></div>');
+      //div안에 인풋태그를 동적 생성하여 넣어야함
+      for(var  i= 1 ; i < defalut ; i++){
+        var sqIdValue = "sub_Ques_" +  i;
+        var pButtonIdValue = "pButton_" +  i;
+        var mButtonIdValue = "mButton_" +  i;
+        var inputVal = '<div id =' +munDiv+'>';
+            inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
+            inputVal +='<button id ='+pButtonIdValue+'>+</button>'
+            inputVal +='<button id ='+mButtonIdValue+'>-</button>'
+            inputVal +='</div>'
+        $(".leftDiv #munHang").append(inputVal);
+        mNum = i+1;
+      }
+      $('.leftDiv').append('</div>');
+    //});
+});
+//+버튼 -버튼 클릭
+$(document).on("click", ".leftDiv #munHang button",function(){
+    //alert($(this).attr('id'));
+   var butttonid ='';
+    buttonid = $(this).attr('id');
+    //alert(buttonid);
+    var bIndex =CountDiv(this);
+    var sqIdValue = "sub_Ques_" +  bIndex;
+    var pButtonIdValue = "pButton_" +  bIndex;
+    var mButtonIdValue = "mButton_" +  bIndex;
+    var munDiv ="munDiv";
+    //삽입될떄 버튼의 아이디 값도 한칸씩 밀려야한다.
+    var str = buttonid.split("_");
+    //+버튼일때!
+    if(str[0] == "pButton"){
+      var inputVal = '<div id =' +munDiv+'>';
+          inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
+          inputVal +='<button id ='+pButtonIdValue+'>+</button>'
+          inputVal +='<button id ='+mButtonIdValue+'>-</button>'
+          inputVal +='</div>';
+      //div 동적생성
+      $(this).parent().after(inputVal);
+      var divCount = $('.leftDiv #munHang div').length;
+      //추가후 아이디값 변경
+      for(var i = bIndex+1; i< divCount; i++){
+        //alert("i 값 =" + i);
+        sqIdValue = "sub_Ques_" +  i;
+        pButtonIdValue = "pButton_" +  i;
+        mButtonIdValue = "mButton_" +  i;
+        $(this).parent().parent().children().eq(i).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
+        $(this).parent().parent().children().eq(i).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
+        $(this).parent().parent().children().eq(i).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
+      }
+    }else if(str[0] == 'mButton'){
+      var divCount = $('.leftDiv #munHang div').length;
+			if(divCount == 2){
+				alert("더 이상 삭제하실수 없습니다")
+			}
+			else{
+      	//밑에 있는 인덱스를 1씩 감소시켜
+	      for(var i = divCount-2; i >= bIndex; i--){
+	        sqIdValue = "sub_Ques_" +  i;
+	        pButtonIdValue = "pButton_" +  i;
+	        mButtonIdValue = "mButton_" +  i;
+	    		$(this).parent().parent().children().eq(i+1).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
+	        $(this).parent().parent().children().eq(i+1).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
+	        $(this).parent().parent().children().eq(i+1).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
+	      }
+	      $(this).parent().parent().children().eq(bIndex).remove();
+		}
+  }
+  });
+//tag 개수를 세는 function
+//index개수에 따라 다시 동적 생성하도록
+function CountDiv(bValue){
+       var indexNum = $(bValue).parent().index();
+       //alert("선택한 엘리먼트의 인덱스 " +indexNum);
+       return indexNum;
+}
+function CountDiv1(bValue){
+       var indexNum = $(bValue).parent().parent().index();
+       //alert("선택한 엘리먼트의 인덱스 " +indexNum);
+       return indexNum+1;
+}
+
+$(document).ready(function(){
+
+  var x = null;
+  var y = null;
+  var destination = null;
+  var my_Button = null;
+  $(document).mousemove(function(e){
+    x = e.clientX;
+    y = e.clientY;
+  });
+
+  $("#copyDialog").dialog({
+    autoOpen: false,
+    position: [x, y],
+    resizable: false,
+
+    buttons: {
+      "앞으로 복사": function(){
+        destination = $("#copy_Select option:checked").val();
+        $(this).dialog("close");
+        my_Button = $("#copyDialog").data("obj");
+
+        copyFunction(my_Button, destination, 0);
+      },
+
+      "뒤로 복사": function(){
+        destination = $("#copy_Select option:checked").val();
+        $(this).dialog("close");
+        my_Button = $("#copyDialog").data("obj");
+
+        copyFunction(my_Button, destination, 1);
+      }
+    }
+  });
+
+  $("#moveDialog").dialog({
+    autoOpen: false,
+    position: [x, y],
+    resizable: false,
+
+    buttons: {
+      "앞으로 이동": function(){
+        destination = $("#move_Select option:checked").val();
+        $(this).dialog("close");
+        my_Button = $("#moveDialog").data("obj");
+
+        moveFunction(my_Button, destination, 0);
+      },
+
+      "뒤로 이동": function(){
+        destination = $("#move_Select option:checked").val();
+        $(this).dialog("close");
+        my_Button = $("#moveDialog").data("obj");
+
+        moveFunction(my_Button, destination, 1);
+      }
+    }
+  });
+});
+
+function moveFunction(my_Button, destination, judge){
+  var buttonid = $(my_Button).parent().parent().attr("id");  //질문_n
+  var number = destination;
+  var str = buttonid.split("_");
+  var divCount = $('.QuesDiv >').length;
+  if(judge == 0){
+    var preIndex = $(my_Button).parent().parent().index(); //버튼 누른 div인덱스 값
+    var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
+    $('.QuesDiv').children().eq(preIndex).remove();
+    $('#'+str[0]+"_"+number).before(jilmunClone);
+    var jilmunto = $('#'+buttonid).index();
+    //위번호에서 밑번호로 이동
+     if(preIndex < jilmunto){
+      var temp = preIndex;
+       preIndex = jilmunto;
+       jilmunto = temp;
+    }
+    for(var i = jilmunto; i<= preIndex; i++){
+      index = i+1;
+      $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
+      var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+      array =h2value.split(" ");
+      var changeText = $('#'+str[0]+"_"+index).attr("id");
+      arrayText =changeText.split("_");
+      array[0] = arrayText[1]+". ";
+      var Fstr = "";
+      for(var j = 0 ; j<=array.length; j++){
+        if(array[j] != null){
+            Fstr+= array[j]+ " ";
+        }else if(j == array.length && array[j] != null){
+            Fstr+= array[j];
+            }
+        }
+        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+      }
+  }
+
+  else if(judge == 1){
+
+  var preIndex = $(my_Button).parent().parent().index(); //버튼 누른 div인덱스 값
+  var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
+  $('.QuesDiv').children().eq(preIndex).remove();
+  $('#'+str[0]+"_"+number).after(jilmunClone);
+  var jilmunto = $('#'+buttonid).index();
+  //위번호에서 밑번호로 이동
+   if(preIndex < jilmunto){
+    var temp = preIndex;
+     preIndex = jilmunto;
+     jilmunto = temp;
+  }
+  for(var i = jilmunto; i<= preIndex; i++){
+    index = i+1;
+    $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
+    var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+    array =h2value.split(" ");
+    var changeText = $('#'+str[0]+"_"+index).attr("id");
+    arrayText =changeText.split("_");
+    array[0] = arrayText[1]+". ";
+    var Fstr = "";
+    for(var j = 0 ; j<=array.length; j++){
+      if(array[j] != null){
+          Fstr+= array[j]+ " ";
+      }else if(j == array.length && array[j] != null){
+          Fstr+= array[j];
+          }
+      }
+      $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+    }
+  }
+}
+
+function copyFunction(my_Button, destination, judge){
+    var buttonid = $(my_Button).parent().parent().attr("id");  //질문_n
+    var number = destination;
+    var str = buttonid.split("_");
+    var divCount = $('.QuesDiv >').length;
+    if(judge == 0){
+      var preIndex = $(my_Button).parent().parent().index() ; //버튼 누른 div인덱스 값
+      var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
+      $('#'+str[0]+"_"+number).before(jilmunClone);
+      var jilmunto = $('#'+buttonid).index();
+      //위번호에서 밑번호로 이동
+       if(preIndex < jilmunto){
+        var temp = preIndex;
+         preIndex = jilmunto;
+         jilmunto = temp;
+      }
+      var divCount = $('.QuesDiv >').length;
+      for(var i = jilmunto; i < divCount; i++){
+        index = i+1;
+        $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
+        var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+        array =h2value.split(" ");
+        var changeText = $('#'+str[0]+"_"+index).attr("id");
+        arrayText =changeText.split("_");
+        array[0] = arrayText[1]+". ";
+        var Fstr = "";
+        for(var j = 0 ; j<=array.length; j++){
+          if(array[j] != null){
+              Fstr+= array[j]+ " ";
+          }else if(j == array.length && array[j] != null){
+              Fstr+= array[j];
+              }
+          }
+          $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+        }
+  }
+  else if(judge == 1){
+    var preIndex = $(my_Button).parent().parent().index(); //버튼 누른 div인덱스 값
+    var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
+    $('#'+str[0]+"_"+number).after(jilmunClone);
+    var jilmunto = $('#'+buttonid).index();
+     if(preIndex < jilmunto){
+      var temp = preIndex;
+       preIndex = jilmunto;
+       jilmunto = temp;
+    }
+    var divCount = $('.QuesDiv >').length;
+    for(var i = jilmunto; i< divCount; i++){
+      index = i+1;
+      $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
+      var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
+      array =h2value.split(" ");
+      var changeText = $('#'+str[0]+"_"+index).attr("id");
+      arrayText =changeText.split("_");
+      array[0] = arrayText[1]+". ";
+      var Fstr = "";
+      for(var j = 0 ; j<=array.length; j++){
+        if(array[j] != null){
+            Fstr+= array[j]+ " ";
+        }else if(j == array.length && array[j] != null){
+            Fstr+= array[j];
+            }
+        }
+        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+      }
+  }
+}
+//왼쪽값
+</script>
+</head>
+<body>
+<!--왼쪽 div 구성요소, drop down으로 객관식, 주관식 선택가능-->
+  <div class = "leftDiv">
+    <div class = "select">
+      <select id = "select">
+        <option value="gaek">객관식</option>
+        <option value="joo">주관식</option>
+      </select>
+    </div>
+
+    <div id = "jooDiv" style = "display: none;">
+      <input type = 'text' id = 'jooInput'></input>
+      주관식
+    </div>
+  </div>
+
+<div class ="QuesDiv">
+
+  <div id="jilmunNum_1"><div id="button_div">
+    <button id="moveBtn">이동</button>
+    <button id="copyBtn">복사</button>
+    <button id="deleteBtn">삭제</button></div>
+  <h2>1. 1</h2>
+  <p></p><p></p><p></p></div>
+  <div id="jilmunNum_2">
+    <div id="button_div">
+    <button id="moveBtn">이동</button>
+    <button id="copyBtn">복사</button>
+    <button id="deleteBtn">삭제</button></div>
+  <h2>2. 2</h2><p></p><p></p><p></p></div>
+  <div id="jilmunNum_3">
+    <div id="button_div">
+    <button id="moveBtn">이동</button><button id="copyBtn">복사</button><button id="deleteBtn">삭제</button></div><h2>3. 3</h2><p></p><p></p><p></p></div>
+    <div id="jilmunNum_4">
+      <div id="button_div">
+      <button id="moveBtn">이동</button>
+      <button id="copyBtn">복사</button>
+      <button id="deleteBtn">삭제</button>
+    </div>
+    <h2>4. 4</h2>
+    <p></p><p></p><p></p>
+  </div>
+    <div id="jilmunNum_5">
+      <div id="button_div">
+      <button id="moveBtn">이동</button>
+      <button id="copyBtn">복사</button>
+      <button id="deleteBtn">삭제</button></div>
+      <h2>5. 5</h2><p></p><p></p><p></p>
+    </div>
+
+
+</div>
+
+<table id="table">
+  <tr>
+    <td><input type = "text"/></td>
+  </tr>
+  <tbody></tbody>
+</table>
+
+<button id="btn1">Append text</button>
+<button id="btn2">+</button>
+
+<div id="moveDialog" title="이동">
+</div>
+
+<div id="copyDialog" title="복사">
+</div>
+
+</body>
+</html>
