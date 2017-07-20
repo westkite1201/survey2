@@ -19,6 +19,82 @@ $(document).ready(function(){
     }
   });
 });
+
+//질문클릭시 왼쪽으로 값 넘기기
+$(document).on("click", ".QuesDiv div:not(#button_div) button",function(){
+   var buttonid = $(this).attr("id");
+   //alert(buttonid)
+   //var divCount = $('#' +buttonid + ' >').not("#button_div").length;
+   array = [];
+   //값 가져오기
+
+   var jilminNumber = $(this).index();
+   alert(jilminNumber);
+
+    $('#' +buttonid + ' >').not("#button_div").each(function(index){
+     if($(this).text()){
+        array.push($(this).text());
+      }
+
+    });
+
+   for(var i = 0 ; i <array.length; i++){
+      alert(array[i]);
+    }
+
+
+ });
+
+ function clickAndMake(array,butttonid){
+     //alert(buttonid);
+     var bIndex =CountDiv(this);
+     var sqIdValue = "sub_Ques_" +  bIndex;
+     var pButtonIdValue = "pButton_" +  bIndex;
+     var mButtonIdValue = "mButton_" +  bIndex;
+     var munDiv ="munDiv";
+     //삽입될떄 버튼의 아이디 값도 한칸씩 밀려야한다.
+     var str = buttonid.split("_");
+     //+버튼일때!
+     if(str[0] == "pButton"){
+       var inputVal = '<div id =' +munDiv+'>';
+           inputVal +='<input type ="text" id = '+sqIdValue+'></input>'
+           inputVal +='<button id ='+pButtonIdValue+'>+</button>'
+           inputVal +='<button id ='+mButtonIdValue+'>-</button>'
+           inputVal +='</div>';
+       //div 동적생성
+       $(this).parent().after(inputVal);
+       var divCount = $('.leftDiv #munHang div').length;
+       //추가후 아이디값 변경
+       for(var i = bIndex+1; i< divCount; i++){
+         //alert("i 값 =" + i);
+         sqIdValue = "sub_Ques_" +  i;
+         pButtonIdValue = "pButton_" +  i;
+         mButtonIdValue = "mButton_" +  i;
+         $(this).parent().parent().children().eq(i).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
+         $(this).parent().parent().children().eq(i).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
+         $(this).parent().parent().children().eq(i).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
+       }
+     }else if(str[0] == 'mButton'){
+       var divCount = $('.leftDiv #munHang div').length;
+ 			if(divCount == 2){
+ 				alert("더 이상 삭제하실수 없습니다")
+ 			}
+ 			else{
+       	//밑에 있는 인덱스를 1씩 감소시켜
+ 	      for(var i = divCount-2; i >= bIndex; i--){
+ 	        sqIdValue = "sub_Ques_" +  i;
+ 	        pButtonIdValue = "pButton_" +  i;
+ 	        mButtonIdValue = "mButton_" +  i;
+ 	    		$(this).parent().parent().children().eq(i+1).children().eq(0).attr("id",sqIdValue); //mundiv eq는 형제들
+ 	        $(this).parent().parent().children().eq(i+1).children().eq(1).attr("id",pButtonIdValue); //mundiv eq는 형제들
+ 	        $(this).parent().parent().children().eq(i+1).children().eq(2).attr("id",mButtonIdValue); //mundiv eq는 형제들
+ 	      }
+ 	      $(this).parent().parent().children().eq(bIndex).remove();
+ 		}
+   }
+ }
+
+
 //각 버튼 별로 function 지정.
 $(document).on("click","#moveBtn",function(){
     //alert("이동버튼");
@@ -33,10 +109,6 @@ $(document).on("click","#moveBtn",function(){
     var divCount = $('.QuesDiv >').length;
 
     if(judge == 0){
-      //위면 무조건
-      //밑번호에서 위번호는 ㅇㅋ
-      //위번호에서 밑번호 x
-      alert("gg");
       var preIndex = $(this).parent().parent().index(); //버튼 누른 div인덱스 값
       var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
       $('.QuesDiv').children().eq(preIndex).remove();
@@ -128,24 +200,17 @@ $(document).on("click","#copyBtn",function(){
   var buttonid = $(this).parent().parent().attr("id");  //질문_n
   var str = buttonid.split("_");
   var divCount = $('.QuesDiv >').length;
-
   if(judge == 0){
-    //위면 무조건
-    //밑번호에서 위번호는 ㅇㅋ
-    //위번호에서 밑번호 x
-    alert("gg");
     var preIndex = $(this).parent().parent().index() ; //버튼 누른 div인덱스 값
     var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
     $('#'+str[0]+"_"+number).before(jilmunClone);
     var jilmunto = $('#'+buttonid).index();
-
     //위번호에서 밑번호로 이동
      if(preIndex < jilmunto){
       var temp = preIndex;
        preIndex = jilmunto;
        jilmunto = temp;
     }
-
     var divCount = $('.QuesDiv >').length;
     for(var i = jilmunto; i < divCount; i++){
       index = i+1;
@@ -153,7 +218,6 @@ $(document).on("click","#copyBtn",function(){
       var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
       array =h2value.split(" ");
       var changeText = $('#'+str[0]+"_"+index).attr("id");
-      alert(changeText);
       arrayText =changeText.split("_");
       array[0] = arrayText[1]+". ";
       var Fstr = "";
@@ -174,7 +238,6 @@ else if(judge == 1){
   var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
   $('#'+str[0]+"_"+number).after(jilmunClone);
   var jilmunto = $('#'+buttonid).index();
-
    if(preIndex < jilmunto){
     var temp = preIndex;
      preIndex = jilmunto;
@@ -305,7 +368,8 @@ $(document).ready(function(){
     //});
 });
 //+버튼 -버튼 클릭
-$(document).on("click", "button",function(){
+$(document).on("click", ".leftDiv #munHang button",function(){
+    //alert($(this).attr('id'));
    var butttonid ='';
     buttonid = $(this).attr('id');
     //alert(buttonid);
