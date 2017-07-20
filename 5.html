@@ -33,17 +33,15 @@ $(document).on("click","#moveBtn",function(){
     countIndex = $('.QuesDiv div').length / 2;
     alert(countIndex);
 
-    var copyTest ='<div id= "moveDialog" title="이동">';
-        copyTest +='<button id="앞으로 이동">앞으로이동</button>';
+    var copyTest ='<button id="before_Move">앞으로이동</button>';
         copyTest +='<select style="width:100%";>';
         for( var i = 1; i < countIndex + 1; i++ ){
           copyTest +='<option value="' + i + '">' + i + '</option>';
         }
         copyTest +='</select>';
-        copyTest +='<button id="뒤로 이동">뒤로이동</button>';
+        copyTest +='<button id="after_Move">뒤로이동</button>';
 
     $("#moveDialog").append(copyTest);
-    $("#moveDialog").append('</div>');
     $("#moveDialog").dialog("open");
 
     var number = prompt("원하는 질문");
@@ -134,17 +132,15 @@ $(document).on("click", "#copyBtn", function(){
   countIndex = $('.QuesDiv div').length / 2;
   alert(countIndex);
 
-  var copyTest ='<div id= "copyDialog" title="복사">';
-      copyTest +='<button id="앞으로 복사">앞으로복사</button>';
+  var copyTest ='<button id="before_Copy">앞으로복사</button>';
       copyTest +='<select style="width:100%";>';
       for( var i = 1; i < countIndex + 1; i++ ){
         copyTest +='<option value="' + i + '">' + i + '</option>';
       }
       copyTest +='</select>';
-      copyTest +='<button id="뒤로 복사">뒤로복사</button>';
+      copyTest +='<button id="after_Copy">뒤로복사</button>';
 
   $("#copyDialog").append(copyTest);
-  $("#copyDialog").append('</div>');
   $("#copyDialog").dialog("open");
 
   var number = prompt("원하는 질문");
@@ -334,5 +330,6 @@ $(document).ready(function(){
 
 <div id="copyDialog" title="복사">
 </div>
+
 </body>
 </html>
