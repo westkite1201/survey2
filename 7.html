@@ -21,23 +21,42 @@ $(document).ready(function(){
 });
 
 //질문클릭시 왼쪽으로 값 넘기기
+$(document).on("click", ".leftDiv #buttonSet #modifYjilmun",function(){
+  if($(".leftDiv #munHang").attr("name")){
+    var name = $(".leftDiv #munHang").attr("name").split("_");
+    array = [];
 
-
-
-$(document).on("click", ".QuesDiv div:not(#button_div)",function(){
-  var flag = false;
-  $(document).on("click",".QuesDiv div > button",function(){ //버튼을 눌렀을때
-    //alert("실행");
-    flag = true;
-    return false;
-  });
-  if(flag){
+    var jil = ($(".leftDiv #munHang #jilmun #mainJilmun").val());
+    alert($(this).text());
+    $(".leftDiv #munHang #munDiv").each(function(index){
+        array.push($(this).text());
+        alert($(this).text());
+    });
+  }
+  else{
+    alert("수정을 하실 수 없습니다. ");
     return false;
   }
+
+});
+// //다ㅓ음 질문 추가는 만약에 현재값이 모디파잉이면 안대게
+// $(document).on("click", ".leftDiv #buttonSet #modifYjilmun",function(){
+//
+//
+// });
+$(document).on("click",".QuesDiv div > button",function(){ //버튼을 눌렀을때
+  return false;
+
+});
+//버튼 눌렀을때 옮기는 함수
+$(document).on("click", ".QuesDiv div:not(#button_div)",function(){
+  var flag = false;
+
+
    var buttonid = $(this).attr("id");
    array = [];
    //값 가져오기
-   var jilminNumber = $(this).index()+1;
+   var jilmunNumber = $(this).index()+1;
 
     $('#' +buttonid + ' >').not("#button_div").each(function(index){
      if($(this).text()){
@@ -50,21 +69,24 @@ $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
       }
     });
 
-    makeJilMun(array,jilminNumber);
+    makeJilMun(array,jilmunNumber);
+
  });
 
- function makeJilMun(array,jilminNumber){
+ function makeJilMun(array,jilmunNumber){
    //alert("살행입니다");
    //$(".leftDiv >").not(".select").not("#jooDiv").remove();
    $(".leftDiv > #munHang").remove();
    var defalut = array.length-1; //
    var munHangIdValue = "munHang";
-   var mNum =jilminNumber;
+   var mNum =jilmunNumber;
+   var mody = "modifying_"+mNum;
    var munDiv ="munDiv";
-    $(".leftDiv").append('<div id = ' +munHangIdValue+'>'+'<div id ="jilmun"><input type ="text" id ="mainJilmun"></div>');
+    $(".leftDiv").append('<div id = ' +munHangIdValue+' name='+mody+'>'+'<div id ="jilmun"><input type ="text" id ="mainJilmun"></div>');
     $("#mainJilmun").val(array[0]);
          //div안에 인풋태그를 동적 생성하여 넣어야함
     for(var  i= 1 ; i <= defalut ; i++){
+
            var sqIdValue = "sub_Ques_" +  i;
            var pButtonIdValue = "pButton_" +  i;
            var mButtonIdValue = "mButton_" +  i;
@@ -74,7 +96,6 @@ $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
                inputVal +='<button id ='+mButtonIdValue+'>-</button>'
                inputVal +='</div>'
            $(".leftDiv #munHang").append(inputVal);
-
            $("#"+sqIdValue).val(array[i]);
          }
          $('.leftDiv').append('</div>');
@@ -83,13 +104,12 @@ $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
 
 //각 버튼 별로 function 지정.
 $(document).on("click","#moveBtn",function(){
-    //alert("이동버튼");
+
     //팝업형식으로 창이 뜬다음 임의의 질문 앞으로 or 뒤로 이동할 수 있음.
+
     var number = prompt("원하는 질문");
     var judge = prompt("위로 0 밑으로 1");
-  //
-    number=parseInt(number);
-    judge = parseInt(judge);
+
     var buttonid = $(this).parent().parent().attr("id");  //질문_n
     var str = buttonid.split("_");
     var divCount = $('.QuesDiv >').length;
@@ -101,7 +121,7 @@ $(document).on("click","#moveBtn",function(){
 
       $('#'+str[0]+"_"+number).before(jilmunClone);
       var jilmunto = $('#'+buttonid).index();
-
+      alert(jilmunto + ' ' + buttonid);
       //위번호에서 밑번호로 이동
        if(preIndex < jilmunto){
         var temp = preIndex;
@@ -116,7 +136,7 @@ $(document).on("click","#moveBtn",function(){
         array =h2value.split(" ");
         var changeText = $('#'+str[0]+"_"+index).attr("id");
         arrayText =changeText.split("_");
-        array[0] = arrayText[1]+". ";
+        array[0] = arrayText[1]+".";
         var Fstr = "";
         for(var j = 0 ; j<=array.length; j++){
           if(array[j] != null){
@@ -137,13 +157,9 @@ $(document).on("click","#moveBtn",function(){
   //preIndex =4;
 
   else if(judge == 1){
-    alert("밑으로");
-    alert("gg");
-
     var preIndex = $(this).parent().parent().index(); //버튼 누른 div인덱스 값
     var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
     $('.QuesDiv').children().eq(preIndex).remove();
-
     $('#'+str[0]+"_"+number).after(jilmunClone);
     var jilmunto = $('#'+buttonid).index();
 
@@ -160,7 +176,7 @@ $(document).on("click","#moveBtn",function(){
       array =h2value.split(" ");
       var changeText = $('#'+str[0]+"_"+index).attr("id");
       arrayText =changeText.split("_");
-      array[0] = arrayText[1]+". ";
+      array[0] = arrayText[1]+".";
       var Fstr = "";
       for(var j = 0 ; j<=array.length; j++){
         if(array[j] != null){
@@ -186,7 +202,9 @@ $(document).on("click","#copyBtn",function(){
   var buttonid = $(this).parent().parent().attr("id");  //질문_n
   var str = buttonid.split("_");
   var divCount = $('.QuesDiv >').length;
+
   if(judge == 0){
+
     var preIndex = $(this).parent().parent().index() ; //버튼 누른 div인덱스 값
     var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
     $('#'+str[0]+"_"+number).before(jilmunClone);
@@ -197,6 +215,7 @@ $(document).on("click","#copyBtn",function(){
        preIndex = jilmunto;
        jilmunto = temp;
     }
+
     var divCount = $('.QuesDiv >').length;
     for(var i = jilmunto; i < divCount; i++){
       index = i+1;
@@ -205,7 +224,7 @@ $(document).on("click","#copyBtn",function(){
       array =h2value.split(" ");
       var changeText = $('#'+str[0]+"_"+index).attr("id");
       arrayText =changeText.split("_");
-      array[0] = arrayText[1]+". ";
+      array[0] = arrayText[1]+".";
       var Fstr = "";
       for(var j = 0 ; j<=array.length; j++){
         if(array[j] != null){
@@ -224,11 +243,12 @@ else if(judge == 1){
   var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
   $('#'+str[0]+"_"+number).after(jilmunClone);
   var jilmunto = $('#'+buttonid).index();
+
    if(preIndex < jilmunto){
     var temp = preIndex;
      preIndex = jilmunto;
      jilmunto = temp;
-  }
+   }
   var divCount = $('.QuesDiv >').length;
   for(var i = jilmunto; i< divCount; i++){
     index = i+1;
@@ -238,7 +258,7 @@ else if(judge == 1){
     array =h2value.split(" ");
     var changeText = $('#'+str[0]+"_"+index).attr("id");
     arrayText =changeText.split("_");
-    array[0] = arrayText[1]+". ";
+    array[0] = arrayText[1]+".";
     var Fstr = "";
     for(var j = 0 ; j<=array.length; j++){
       if(array[j] != null){
@@ -322,11 +342,7 @@ $(document).on("click","#btn1",function(){
       jilmunCount +=1;
   //  }
   });
-$(document).ready(function(){
-  $("#btn1").click(function(){
-//  alert($(".leftDiv #munHang #munDiv #sub_Ques_1").val());
-  });
-});
+
 //이거 바꿈
 //일단 하나씪 밀었씁니다
 //input 값 동적생성
@@ -418,11 +434,6 @@ function CountDiv1(bValue){
        return indexNum+1;
 }
 //왼쪽값
-$(document).ready(function(){
-$('.QuesDiv div').mouseover(function(){
-  alert($(this).attr("id"));
-    });
- });
 
 
 
@@ -444,11 +455,15 @@ $('.QuesDiv div').mouseover(function(){
       <input type = 'text' id = 'jooInput'></input>
       주관식
     </div>
+    <div id ="buttonSet">
+      <button id = "modifYjilmun">수정</button>
+      <button id = "nextJilmun">다음 질문 추가</button>
+    </div>
   </div>
-
+<!--
 <div class = "alpha">
 
-</div>
+</div> -->
 
 <div class ="QuesDiv">
 

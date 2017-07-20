@@ -2,7 +2,7 @@
   background: grey;
   overflow-y: scroll;
   float :left;
-  width: 50%;
+  width: 100%;
   height: 300px;
 }
 .rightDiv{
@@ -36,9 +36,9 @@
 .a{display: none;}
 
 
-.alpha
+.buttonSet
 {
-  background: yellow;
-  width :500px;
+
+  width :100%;
   height :100px;
 }
