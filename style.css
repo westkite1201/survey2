@@ -2,7 +2,7 @@
   background: grey;
   overflow-y: scroll;
   float :left;
-  width: 100%;
+  width: 50%;
   height: 300px;
 }
 .rightDiv{

@@ -21,13 +21,11 @@ $(document).ready(function(){
 });
 
 function emptyInput(){
-  alert("DELETE");
-  $(".leftDiv #munHang munDiv:eq(0)").val("");
+  $(".leftDiv #munHang >* input").each(function(){
+    $(this).val("");
+  });
 }
-////d
-
-
-
+////
 
 //수정 취소
 $(document).on("click", ".leftDiv #buttonSet #modifYjilmunCancle",function(){
@@ -354,6 +352,10 @@ $(document).on("click","#deleteBtn",function(){
 //오른쪽에 넘기는 동작
 $(document).on("click","#nextJilmun",function(){
   var jilmunCount = $('.QuesDiv div:not(#button_div)').length+1;
+  if(!CheckContext()){
+    alert("비어있는 문항이 있습니다");
+    return false;
+  }
 
   if($(".leftDiv #munHang").attr("name")){
     alert("현재 수정중인 문항이 있습니다");
@@ -476,8 +478,38 @@ function CountDiv1(bValue){
 //왼쪽값
 //
 
+function CheckContext(){
+$(".leftDiv #munHang>* input").each(function(){
+
+  if(!$(this).val()){
+    return false;
+  }
+  else{
+    return true;
+  }
+});
+}
 
 
+$(document).on("mouseenter", ".leftDiv #munHang>* input",function(){
+    CheckContext();
+});
+
+$(document).on("mouseenter",".QuesDiv>div",function(){
+    $(this).children().prevUntil("button_div").attr("class","b");
+});
+$(document).on("mouseleave",".QuesDiv>div",function(){
+  $(this).children().eq(0).attr("class","c");
+});
+
+ $(document).on("mouseenter",".leftDiv>#munHang>#munDiv",function(){
+   $(this).children(':not(:text)').attr("class","a");
+ });
+
+ $(document).on("mouseleave",".leftDiv>#munHang>#munDiv",function(){
+   $(this).children().eq(1).attr("class","c");
+   $(this).children().eq(2).attr("class","c");
+ });
 
 </script>
 </head>
