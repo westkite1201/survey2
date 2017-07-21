@@ -7,22 +7,6 @@
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
 <script>
-//드롭다운 버튼 만들기
-//select option "객관식" or "주관식"
-// $(document).ready(function(){
-//   $("#select").on('change', function(){
-//     var id_val = $(this).val();
-//     if( id_val == 'gaek' ){
-//       $('#munHang').toggle();
-//       $('#jooDiv').toggle();
-//     }
-//     else{
-//       $('#munHang').toggle();
-//       $('#jooDiv').toggle();
-//     }
-//   });
-// });
-//인풋값 초기화
 function emptyInput(){
   $(".leftDiv #munHang >* input").each(function(){
     $(this).val("");
@@ -70,13 +54,6 @@ $(document).on('change',"#select", function(){
     makeJuGwan();
   }
 });
-
-//현재 타켓
-function presentSelect(){
-
-
-}
-
 
 function makeJuGwan(){
   var munHangIdValue = "munHang";
@@ -172,6 +149,8 @@ $(document).on("click", ".leftDiv #buttonSet #modifYjilmun",function(){
           }
       });
     }
+
+    //수정 요망!
     else if(leftMunLen >quesMunLen){
       var pointer = 0;
       $("#jilmunNum_"+name[1]+">p").each(function(index){
@@ -183,6 +162,7 @@ $(document).on("click", ".leftDiv #buttonSet #modifYjilmun",function(){
         $("#jilmunNum_"+name[1]+">").eq(i+1).after(inputTag);
       }
     }
+    //수정요망!!!
     else{
       $("#jilmunNum_"+name[1]+">p").each(function(index){
           $(this).text(array[index]);
@@ -224,11 +204,9 @@ $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
       }
     });
     if(selectorName == "gaekGwan"){
-
       $(".leftDiv #select option:eq(0)").prop("selected", "true");
     }
     else if (selectorName == "jooGwan"){
-      
       $(".leftDiv #select option:eq(1)").prop("selected", "true");
     }
     makeJilMun(array,jilmunNumber);
@@ -670,22 +648,28 @@ function copyFunction(my_Button, destination, judge){
   <div id="jilmunNum_3" name="gaekGwan">
     <div id="button_div" class = "c">
     <button id="moveBtn">이동</button><button id="copyBtn">복사</button><button id="deleteBtn">삭제</button></div><h2>3. 3</h2><p>7</p><p>8</p><p>9</p></div>
+
     <div id="jilmunNum_4" name="gaekGwan">
       <div id="button_div" class = "c">
       <button id="moveBtn">이동</button>
       <button id="copyBtn">복사</button>
       <button id="deleteBtn">삭제</button>
     </div>
+
     <h2>4. 4</h2>
     <p>10</p><p>11</p><p>12</p>
+   </div>
+
+   <div id="jilmunNum_5" name="gaekGwan">
+     <div id="button_div" class = "c">
+     <button id="moveBtn">이동</button>
+     <button id="copyBtn">복사</button>
+     <button id="deleteBtn">삭제</button>
+   </div>
+
+   <h2>5. 5</h2>
+   <p>13</p><p>14</p><p>15</p>
   </div>
-    <div id="jilmunNum_5 name="gaekGwan"">
-      <div id="button_div" class = "c">
-      <button id="moveBtn">이동</button>
-      <button id="copyBtn">복사</button>
-      <button id="deleteBtn">삭제</button></div>
-      <h2>5. 5</h2><p>13</p><p>14</p><p>15</p>
-    </div>
 
 </div>
 
