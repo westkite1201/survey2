@@ -2,7 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
@@ -25,8 +25,7 @@ $(document).ready(function(){
 //질문클릭시 왼쪽으로 값 넘기기
 $(document).on("click", ".QuesDiv div:not(#button_div) button",function(){
    var buttonid = $(this).attr("id");
-   //alert(buttonid)
-   //var divCount = $('#' +buttonid + ' >').not("#button_div").length;
+
    array = [];
    //값 가져오기
    var jilminNumber = $(this).index();
