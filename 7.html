@@ -96,7 +96,7 @@ $(document).on("click","#moveBtn",function(){
   countIndex = $('.QuesDiv div').length / 2;
   alert(countIndex);
 
-  var copyTest ='<select id="move_Select" style="width:100%";>';
+  var copyTest ='<select id="move_Select" style="width:50%";>';
       for( var i = 1; i < countIndex + 1; i++ ){
         copyTest +='<option value="' + i + '">' + i + '</option>';
       }
@@ -113,8 +113,7 @@ $(document).on("click","#copyBtn",function(){
   countIndex = $('.QuesDiv div').length / 2;
   alert(countIndex);
 
-  // var copyTest ='<button id="before_Copy">앞으로복사</button>';
-  var copyTest ='<select id="copy_Select" style="width:100%";>';
+  var copyTest ='<select id="copy_Select" style="width:50%";>';
       for( var i = 1; i < countIndex + 1; i++ ){
         copyTest +='<option value="' + i + '">' + i + '</option>';
       }
