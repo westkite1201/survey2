@@ -91,7 +91,7 @@
 
  }
 
-.c{display: none;}
+.hideButton{display: none;}
 
  #moveBtn {
     -moz-box-shadow:inset 0px 1px 0px 0px #fce2c1;
