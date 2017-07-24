@@ -156,7 +156,7 @@ $(document).on("click","#copyBtn",function(){
 
   var countIndex = null;
 
-  countIndex = $('.QuesDiv div').length / 2;
+  countIndex = $('.QuesDiv div not(:#button_div)').length;
   alert(countIndex);
 
   var copyTest ='<select id="copy_Select" style="width:50%";>';
