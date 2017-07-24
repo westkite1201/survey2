@@ -279,12 +279,15 @@ $(document).on("click","#moveBtn",function(){
     return false;
   }
   $("#moveDialog").empty();
+  var nowIndex = $(this).parent().parent().index() + 1;
   var countIndex = null;
   countIndex = $('.QuesDiv div:not(#button_div)').length;
 
   var copyTest ='<select id="move_Select" style="width:50%";>';
       for( var i = 1; i < countIndex + 1; i++ ){
-        copyTest +='<option value="' + i + '">' + i + '</option>';
+        if( i != nowIndex ){
+          copyTest +='<option value="' + i + '">' + i + '</option>';
+        }
       }
       copyTest +='</select>';
   $("#moveDialog").append(copyTest);
@@ -296,12 +299,15 @@ $(document).on("click","#copyBtn",function(){
     return false;
   }
   $("#copyDialog").empty();
+  var nowIndex = $(this).parent().parent().index() + 1;
   var countIndex = null;
   countIndex = $('.QuesDiv div:not(#button_div)').length;
 
   var copyTest ='<select id="copy_Select" style="width:50%";>';
       for( var i = 1; i < countIndex + 1; i++ ){
-        copyTest +='<option value="' + i + '">' + i + '</option>';
+        if( i != nowIndex ){
+          copyTest +='<option value="' + i + '">' + i + '</option>';
+        }
       }
       copyTest +='</select>';
       // copyTest +='<button id="after_Copy">뒤로복사</button>';
