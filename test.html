@@ -39,6 +39,7 @@ $(document).on("click", ".leftDiv #buttonSet #modifYjilmunCancle",function(){
 });
 //수정취소 끝
 
+
 //현재 선택되있는 선택자 객관식 1, 주관식 2
 function checkYouHyeong(){
   if($("#select").val() == "gaek"){
@@ -69,8 +70,7 @@ $(document).on('change',"#select", function(){
 //주관식 생성함수
 function makeJuGwan(name){
   var munHangIdValue = "munHang";
-  var mNum =1;
-  var munDiv ="munDiv";
+
   if(name!=""){
     $(".leftDiv").append('<div id = ' +munHangIdValue+' class ="jooGwan" name ='+name+'>'+ '<div id ="jilmun"><input type ="text" id ="mainJilmun"></div>');
     //div안에 인풋태그를 동적 생성하여 넣어야함
@@ -150,10 +150,15 @@ function nextJilMun(){
           leftMake += '<button id="copyBtn">복사</button>';
           leftMake += '<button id="deleteBtn">삭제</button>';
           leftMake += '</div>';
-          leftMake +='<h2>'+jilmunCount+". "+ jil;
+          leftMake += '<div class ="ff_quesNumber">';
+          leftMake += '<span class ="quesNumber">Q:1</span>';
+          leftMake +='<h2 class="jilmun_title">'+jil;
           leftMake +='</h2>';
+          leftMake += '</div>';
       for(var i = 1 ; i < array.length; i++){
-        leftMake +='<p>'+array[i]+'</p>';
+        leftMake += '<ul class="ff_munHangs">'
+        leftMake +='<li>'+array[i]+'</li>';
+        leftMake += '</ul>'
       }
         leftMake +='</div>';
       $(".QuesDiv").append(leftMake);
@@ -238,6 +243,7 @@ $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
   var selectorName = $(this).attr("name");
   var flag = false;
   var buttonid = $(this).attr("id");
+
    array = [];
    //값 가져오기
    //background 변경
@@ -249,12 +255,11 @@ $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
    //
 
    var jilmunNumber = $(this).index()+1;
-    $('#' +buttonid + ' >').not("#button_div").each(function(index){
+   array.push($('#' +buttonid + '> .ff-quesNumber h2').text());
+    $('#' +buttonid + ' > .ff-munHangs li').each(function(index){
      if($(this).text()){
        if(index == 0){// 맨처음 질문일 경우
          var mainj = $(this).text();
-         var str=$(this).text().split(" ",1);
-         mainj=mainj.substr(str[0].length+1,mainj.length);
          array.push(mainj);
        }else{
         array.push($(this).text());
@@ -293,8 +298,10 @@ $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
                inputVal +='<button id ='+mButtonIdValue+' class ="hideButton">-</button>'
                inputVal +='</div>'
            $(".leftDiv #munHang").append(inputVal);
+
            $("#"+sqIdValue).val(array[i]);
          }
+
          $('.leftDiv').append('</div>');
  }
 
@@ -307,7 +314,7 @@ $(document).on("click","#moveBtn",function(){
   $("#moveDialog").empty();
   var nowIndex = $(this).parent().parent().index() + 1;
   var countIndex = null;
-  countIndex = $('.QuesDiv div:not(#button_div)').length;
+  countIndex = $('.QuesDiv div:not(#button_div)').length/2;
 
   var copyTest ='<select id="move_Select" style="width:50%";>';
       for( var i = 1; i < countIndex + 1; i++ ){
@@ -327,7 +334,7 @@ $(document).on("click","#copyBtn",function(){
   $("#copyDialog").empty();
   var nowIndex = $(this).parent().parent().index() + 1;
   var countIndex = null;
-  countIndex = $('.QuesDiv div:not(#button_div)').length;
+  countIndex = $('.QuesDiv div:not(#button_div)').length /2;
 
   var copyTest ='<select id="copy_Select" style="width:50%";>';
       for( var i = 1; i < countIndex + 1; i++ ){
@@ -356,19 +363,11 @@ $(document).on("click","#deleteBtn",function(){
       //삭제는 현재위치 삭제한후 아이디값을 1씩 줄이면 됨
       for(var i=jilmunFrom; i< jilmunTo; i++){
         var index = parseInt(i+1)
-        $('.QuesDiv').children().eq(i).attr("id",array[0]+"_"+index);
-        var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
-        h2valArray =h2value.split(" ");
-        h2valArray[0] = index+".";
-        var Fstr = "";
-        for(var j = 0 ; j<=h2valArray.length; j++){
-          if(h2valArray[j] != null){
-            Fstr+= h2valArray[j]+ " ";
-          }else if(j == h2valArray.length && h2valArray[j] != null){
-            Fstr+= h2valArray[j];
-          }
-        }
-        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+        $('.QuesDiv >').eq(i).attr("id",array[0]+"_"+index);
+
+      
+        var k= $('.QuesDiv').children().eq(i);
+        k.children(".ff-quesNumber").children(".quesNumber").text("Q"+index);
     }
 });
 
@@ -464,33 +463,6 @@ function CheckContext(){
 
 
 
-
-
-
-
-//hams css
-$(document).on("mouseenter",".QuesDiv>div",function(){
-    $(this).children().eq(0).attr("class","b");
-});
-$(document).on("mouseleave",".QuesDiv>div",function(){
-  $(this).children().eq(0).attr("class","hideButton");
-});
-
- $(document).on("mouseenter",".leftDiv>#munHang>#munDiv",function(){
-   $(this).children(':not(:text)').attr("class","a");
- });
-
- $(document).on("mouseleave",".leftDiv>#munHang>#munDiv",function(){
-   $(this).children().eq(1).attr("class","hideButton");
-   $(this).children().eq(2).attr("class","hideButton");
- });
-
-
-
- //hams
-
-
-
 //dialog
 $(document).ready(function(){
   var x = null;
@@ -541,6 +513,7 @@ $(document).ready(function(){
   });
 });
 
+
 function moveFunction(my_Button, destination, judge){
   var buttonid = $(my_Button).parent().parent().attr("id");  //질문_n
   var number = destination;
@@ -562,20 +535,12 @@ function moveFunction(my_Button, destination, judge){
     for(var i = jilmunto; i<= preIndex; i++){
       index = i+1;
       $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
-      var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
-      array =h2value.split(" ");
+      var h2value = $('#'+buttonid +".jilmun_title").text();
       var changeText = $('#'+str[0]+"_"+index).attr("id");
       arrayText =changeText.split("_");
-      array[0] = arrayText[1]+".";
-      var Fstr = "";
-      for(var j = 0 ; j<=array.length; j++){
-        if(array[j] != null){
-            Fstr+= array[j]+ " ";
-        }else if(j == array.length && array[j] != null){
-            Fstr+= array[j];
-            }
-        }
-        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+      var k= $('.QuesDiv').children().eq(i);
+      k.children(".ff-quesNumber").children(".quesNumber").text("Q"+arrayText[1]);
+    //  k.(".quesNumber").text(arrayText[1]);
       }
   }
   else if(judge == 1){
@@ -593,20 +558,11 @@ function moveFunction(my_Button, destination, judge){
     for(var i = jilmunto; i<= preIndex; i++){
       index = i+1;
       $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
-      var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
-      array =h2value.split(" ");
+      var h2value = $('#'+buttonid +".jilmun_title").text();
       var changeText = $('#'+str[0]+"_"+index).attr("id");
       arrayText =changeText.split("_");
-      array[0] = arrayText[1]+". ";
-      var Fstr = "";
-      for(var j = 0 ; j<=array.length; j++){
-        if(array[j] != null){
-            Fstr+= array[j]+ " ";
-        }else if(j == array.length && array[j] != null){
-            Fstr+= array[j];
-            }
-        }
-        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
+      var k= $('.QuesDiv').children().eq(i);
+      k.children(".ff-quesNumber").children(".quesNumber").text("Q"+arrayText[1]);
       }
   }
 }
@@ -631,21 +587,12 @@ function copyFunction(my_Button, destination, judge){
       for(var i = jilmunto; i < divCount; i++){
         index = i+1;
         $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
-        var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
-        array =h2value.split(" ");
+        var h2value = $('#'+buttonid +".jilmun_title").text();
         var changeText = $('#'+str[0]+"_"+index).attr("id");
         arrayText =changeText.split("_");
-        array[0] = arrayText[1]+".";
-        var Fstr = "";
-        for(var j = 0 ; j<=array.length; j++){
-          if(array[j] != null){
-              Fstr+= array[j]+ " ";
-          }else if(j == array.length && array[j] != null){
-              Fstr+= array[j];
-              }
-          }
-          $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
-        }
+        var k= $('.QuesDiv').children().eq(i);
+      k.children(".ff-quesNumber").children(".quesNumber").text("Q"+arrayText[1]);
+      }
   }
   else if(judge == 1){
     var preIndex = $(my_Button).parent().parent().index(); //버튼 누른 div인덱스 값
@@ -661,24 +608,69 @@ function copyFunction(my_Button, destination, judge){
     for(var i = jilmunto; i< divCount; i++){
       index = i+1;
       $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
-      var h2value = $('.QuesDiv >').eq(i).children().eq(1).text();
-      array =h2value.split(" ");
+      var h2value = $('#'+buttonid +".jilmun_title").text();
       var changeText = $('#'+str[0]+"_"+index).attr("id");
       arrayText =changeText.split("_");
-      array[0] = arrayText[1]+". ";
-      var Fstr = "";
-      for(var j = 0 ; j<=array.length; j++){
-        if(array[j] != null){
-            Fstr+= array[j]+ " ";
-        }else if(j == array.length && array[j] != null){
-            Fstr+= array[j];
-            }
-        }
-        $('.QuesDiv').children().eq(i).children().eq(1).text(Fstr);
-      }
+      var k= $('.QuesDiv').children().eq(i);
+    k.children(".ff-quesNumber").children(".quesNumber").text("Q"+arrayText[1]);
   }
 }
+
+}
 //dialog end
+
+//hams css
+$(document).on("mouseenter",".QuesDiv>div",function(){
+    $(this).children().eq(0).attr("class","b");
+});
+$(document).on("mouseleave",".QuesDiv>div",function(){
+  $(this).children().eq(0).attr("class","hideButton");
+});
+ $(document).on("mouseenter",".leftDiv>#munHang>#munDiv",function(){
+   $(this).children(':not(:text)').attr("class","a");
+ });
+ $(document).on("mouseleave",".leftDiv>#munHang>#munDiv",function(){
+   $(this).children().eq(1).attr("class","hideButton");
+   $(this).children().eq(2).attr("class","hideButton");
+ });
+ //hams
+
+//  $(document).on("mouseenter", ".QuesDiv div:not(#button_div)",function(){
+//    var selectorName = $(this).attr("name");
+//    var buttonid = $(this).attr("id");
+//    $(init(buttonid));
+//
+//  });
+//
+//
+// function init(buttonid) {
+//   alert("내가 받은 값 = "+buttonid);
+//   $('#'+buttonid).draggable();
+//
+//   $('#'+buttonid).droppable( {
+//      dragenter: handleEvent
+//    } );
+// }
+// function handleEvent(){
+//   alert("내 밑에 있는 값 =" +$(this).attr("id"));
+// }
+
+
+$(function(){
+   $(".QuesDiv").sortable({
+      revert: true
+    })
+});
+
+$(function() {
+	$("#mainJilmun").keyup(function() {
+		$(".QuesDiv > #jilmunNum_1 h2").text($("#mainJilmun").val());
+	});
+});
+
+
+
+
 
 
 </script>
@@ -705,48 +697,77 @@ function copyFunction(my_Button, destination, judge){
 <div class = "alpha">
 </div> -->
 
-<div class ="QuesDiv">
-
-
-
+<div class ="QuesDiv" id="sortable">
 
   <div id="jilmunNum_1" name="gaekGwan"><div id="button_div" class = "hideButton">
     <button id="moveBtn">이동</button>
     <button id="copyBtn">복사</button>
     <button id="deleteBtn">삭제</button></div>
-  <h2>1. 1</h2>
-  <p>1</p><p>2</p><p>3</p></div>
-  <div id="jilmunNum_2" name="gaekGwan">
-    <div id="button_div" class = "hideButton">
-    <button id="moveBtn">이동</button>
-    <button id="copyBtn">복사</button>
-    <button id="deleteBtn">삭제</button></div>
-  <h2>2. 2</h2><p>4</p><p>5</p><p>6</p></div>
-  <div id="jilmunNum_3" name="gaekGwan">
-    <div id="button_div" class = "hideButton">
-    <button id="moveBtn">이동</button><button id="copyBtn">복사</button><button id="deleteBtn">삭제</button></div><h2>3. 3</h2><p>7</p><p>8</p><p>9</p></div>
-
-    <div id="jilmunNum_4" name="gaekGwan">
-      <div id="button_div" class = "hideButton">
-      <button id="moveBtn">이동</button>
-      <button id="copyBtn">복사</button>
-      <button id="deleteBtn">삭제</button>
+    <div class = "ff-quesNumber">
+      <span class ="quesNumber">Q1</span> <h2 class="jilmun_title">질문1</h2>
     </div>
+    <ul class = "ff-munHangs">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+</div>
 
-    <h2>4. 4</h2>
-    <p>10</p><p>11</p><p>12</p>
-   </div>
-
-   <div id="jilmunNum_5" name="gaekGwan">
-     <div id="button_div" class = "hideButton">
-     <button id="moveBtn">이동</button>
-     <button id="copyBtn">복사</button>
-     <button id="deleteBtn">삭제</button>
-   </div>
-
-   <h2>5. 5</h2>
-   <p>13</p><p>14</p><p>15</p>
+<div id="jilmunNum_2" name="gaekGwan"><div id="button_div" class = "hideButton">
+  <button id="moveBtn">이동</button>
+  <button id="copyBtn">복사</button>
+  <button id="deleteBtn">삭제</button></div>
+  <div class = "ff-quesNumber">
+    <span class ="quesNumber">Q2</span> <h2 class="jilmun_title">질문2</h2>
   </div>
+  <ul class = "ff-munHangs">
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+  </ul>
+</div>
+
+<div id="jilmunNum_3" name="gaekGwan"><div id="button_div" class = "hideButton">
+  <button id="moveBtn">이동</button>
+  <button id="copyBtn">복사</button>
+  <button id="deleteBtn">삭제</button></div>
+  <div class = "ff-quesNumber">
+    <span class ="quesNumber">Q3</span> <h2 class="jilmun_title">질문3</h2>
+  </div>
+  <ul class = "ff-munHangs">
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+  </ul>
+</div>
+
+<div id="jilmunNum_4" name="gaekGwan"><div id="button_div" class = "hideButton">
+  <button id="moveBtn">이동</button>
+  <button id="copyBtn">복사</button>
+  <button id="deleteBtn">삭제</button></div>
+  <div class = "ff-quesNumber">
+    <span class ="quesNumber">Q4</span> <h2 class="jilmun_title">질문4</h2>
+  </div>
+  <ul class = "ff-munHangs">
+      <li>10</li>
+      <li>11</li>
+      <li>12</li>
+  </ul>
+</div>
+
+<div id="jilmunNum_5" name="gaekGwan"><div id="button_div" class = "hideButton">
+  <button id="moveBtn">이동</button>
+  <button id="copyBtn">복사</button>
+  <button id="deleteBtn">삭제</button></div>
+  <div class = "ff-quesNumber">
+    <span class ="quesNumber">Q5</span> <h2 class="jilmun_title">질문5</h2>
+  </div>
+  <ul class = "ff-munHangs">
+      <li>13</li>
+      <li>14</li>
+      <li>15</li>
+  </ul>
+</div>
 
 </div>
 
