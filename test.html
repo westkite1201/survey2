@@ -364,8 +364,6 @@ $(document).on("click","#deleteBtn",function(){
       for(var i=jilmunFrom; i< jilmunTo; i++){
         var index = parseInt(i+1)
         $('.QuesDiv >').eq(i).attr("id",array[0]+"_"+index);
-
-      
         var k= $('.QuesDiv').children().eq(i);
         k.children(".ff-quesNumber").children(".quesNumber").text("Q"+index);
     }
@@ -635,31 +633,30 @@ $(document).on("mouseleave",".QuesDiv>div",function(){
  });
  //hams
 
-//  $(document).on("mouseenter", ".QuesDiv div:not(#button_div)",function(){
-//    var selectorName = $(this).attr("name");
-//    var buttonid = $(this).attr("id");
-//    $(init(buttonid));
-//
-//  });
-//
-//
-// function init(buttonid) {
-//   alert("내가 받은 값 = "+buttonid);
-//   $('#'+buttonid).draggable();
-//
-//   $('#'+buttonid).droppable( {
-//      dragenter: handleEvent
-//    } );
-// }
-// function handleEvent(){
-//   alert("내 밑에 있는 값 =" +$(this).attr("id"));
-// }
 
 
 $(function(){
    $(".QuesDiv").sortable({
       revert: true
     })
+    $(".QuesDiv").draggable();
+    $(".QuesDiv div").droppable({
+      start: function( event, ui ) {
+        alert($(event).attr("id"));
+      },
+      //destination
+      drop: function( event, ui ) {
+          alert($(this).attr("id"));
+        },
+      // over:function(event,ui){
+      //   alert($(this).attr("id"));
+      // },
+      // out: function( event, ui ) {
+      //     alert($(this).attr("id"));
+      //  }
+
+    });
+
 });
 
 $(function() {
