@@ -11,6 +11,8 @@
   height: 300px;
 }
 .QuesDiv{
+  padding-top: 100px;
+  padding-bottom: 100px;
   background: grey;
   overflow-y: scroll;
   display: inline-block;
@@ -98,6 +100,10 @@
 
  .b{
 
+ }
+ #sortable{
+   padding: 15px 5px 30px;
+   position: relative;
  }
 
 .hideButton{display: none;}
@@ -237,7 +243,7 @@
     top:1px;
  }
  .highlight {
-        border: 100px solid white;
+        border: 20px solid white;
         font-weight: bold;
         font-size: 45px;
         background-color: black;

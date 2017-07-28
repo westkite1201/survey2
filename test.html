@@ -238,7 +238,7 @@ $(document).on("click",".QuesDiv div > button",function(){ //버튼을 눌렀을
   return false;
 });
 
-var before=-1;
+
 //quesDiv를 눌렀을떄 좌측으로 옮기는 함수
 $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
   var selectorName = $(this).attr("name");
@@ -247,13 +247,7 @@ $(document).on("click", ".QuesDiv div:not(#button_div)",function(){
 
    array = [];
    //값 가져오기
-   //background 변경
-   if(before != -1){
-     $(".QuesDiv").children().eq(before).css('background-color','grey');
-   }
-   $(this).css('background-color','orange');
-   before =  $(this).index();
-   //
+
 
    var jilmunNumber = $(this).index()+1;
 
@@ -582,7 +576,7 @@ function copyFunction(my_Button, destination, judge){
       var preIndex = $(my_Button).parent().parent().index() ; //버튼 누른 div인덱스 값
       var jilmunClone = $('.QuesDiv').children().eq(preIndex).clone(); //clone을 만들어 놓고
       $('#'+str[0]+"_"+number).before(jilmunClone);
-      var jilmunto = $('#'+buttonid).index();
+      var jilmunto = $('#'+buttonid).index()
       //위번호에서 밑번호로 이동
        if(preIndex < jilmunto){
         var temp = preIndex;
@@ -647,69 +641,68 @@ $(document).on("mouseleave",".QuesDiv>div",function(){
 
 
 
-  // var startID = [];
-  // var destinationID = [];
+
 
   $(function(){
     var startIndex =0;
     var buttonid ="jilmunNum_";
     var destinationIndex = 0;
     var judge= 1;
-    // $("#sortable>").draggable({
-    //   revert: "invalid",
-    //   connectToSortable: "#sortable"
-    // });
-
     $("#sortable").sortable({
       revert: true,
+      axis:"y",
+      //containment: "#sortable",
       placeholder :"highlight",
       start: function(event, ui){
-        startIndex = parseInt(ui.item.index()) + 1 ;
-        buttonid = "jilmunNum_" +startIndex;
+        $(ui.item).data("startindex", ui.item.index());
       //  alert(findHighLight());
       },
-      change: function(event,ui){
-           destinationIndex =findHighLight();
-        }
-      ,
       stop:function(event,ui){
-        dragMove(buttonid, destinationIndex, judge);
-      }
-    });
+        var k=buttonid + ($(ui.item).data("startindex")+1);
+        destinationIndex=$(ui.item).index()+1;
+        if($(ui.item).data("startindex") != $(ui.item).index()){
+          if($(ui.item).data("startindex")  < destinationIndex){
+            dragMove(k, destinationIndex, judge);
+          }
+          else{
+            destinationIndex-=1;
+            dragMove(k, destinationIndex, judge);
+          }
+        }
+      },
+    }).disableSelection();
 
-    $(".QuesDiv > div").droppable({
-    });
   });
-  function findHighLight(){
-    return $(".highlight").index();
-  }
 
 
 //밑에서 위로 위로 0
 //위서 밑으로   아래로 1
 
-
 function dragMove(buttonid, destination, judge){
      var number = destination;
+    // alert("buttonid " +buttonid + " number =" + number);
      var str = buttonid.split("_");
      var index =str[1]-1;
-     if(index == destination){
+     if( number < 0){
        return false;
      }
+
     var flag = true;
     if(number == 0){
       number =1;
       flag =false;
     }
+
     var preIndex = parseInt(str[1])-1;
     var jilmunClone = $('.QuesDiv #'+buttonid).clone(); //clone을 만들어 놓고
     $('.QuesDiv #'+buttonid).remove(); //그 아디값 가진  놈 지우고
+    //alert(number);
     if(flag){
       $('#'+str[0]+"_"+number).after(jilmunClone);//데스티 넘버
     }
     else{
       $('#'+str[0]+"_"+number).before(jilmunClone)
-  };//데스티 넘버}
+    };//데스티 넘버}
     var jilmunto = $('#'+buttonid).index(); //복사한 놈 번호가되고
     //위번호에서 밑번호로 이동
      if(preIndex < jilmunto){
@@ -717,16 +710,15 @@ function dragMove(buttonid, destination, judge){
        preIndex = jilmunto;
        jilmunto = temp;
     }
-
     for(var i = jilmunto; i<= preIndex; i++){
       index = i+1;
       $('.QuesDiv >').eq(i).attr("id",str[0]+"_"+index);
-      var changeText = $('#'+str[0]+"_"+index).attr("id");
-      //alert(changeText);
-      arrayText =changeText.split("_");
-    //  alert("arrayText= " +arrayText[1]);
+      var changeText = $('#'+str[0]+"_"+index).index();
+
+      changeText +=1;
+
       var k= $('.QuesDiv').children().eq(i);
-      k.children(".ff_quesNumber").children(".quesNumber").text("Q"+arrayText[1]);
+      k.children(".ff_quesNumber").children(".quesNumber").text("Q"+changeText);
       }
 
 }
@@ -735,7 +727,7 @@ function dragMove(buttonid, destination, judge){
 
 $(function() {
 	$("#mainJilmun").keyup(function() {
-    alert("dsa");
+
 		$(".QuesDiv > #jilmunNum_1 .jilmun_title").text($("#mainJilmun").val());
 	});
 });
